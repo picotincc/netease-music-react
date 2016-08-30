@@ -8,7 +8,7 @@ module.exports = {
     context: path.resolve("./src"),
 
     entry: {
-        vendor: [ "jquery" ],
+        vendor: [ "jquery", "babel-polyfill" ],
         nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ]
     },
 

@@ -1,9 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+import ServiceClient from "../service/ServiceClient";
 
 export default class App extends Component {
     componentDidMount = () => {
         console.log("App is running");
+        this.run();
     }
+
+    async run()
+    {
+        const userId = await ServiceClient.getInstance().login();
+        console.log(userId);
+    }
+
     render() {
         return (
           <div className="nmr-app">
