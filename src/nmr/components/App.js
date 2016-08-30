@@ -7,7 +7,10 @@ export default class App extends Component {
     render() {
         return (
           <div className="nmr-app">
-                <header><h1>网易云音乐</h1></header>
+                <header>
+                    <div className="logo"></div>
+                    <h1>网易云音乐</h1>
+                </header>
                 <main>
                     <aside className="sidebar"></aside>
                     <section className="content"></section>
