@@ -1,0 +1,56 @@
+.nmr-app
+{
+    width: 100%;
+    height: 100%;
+    color: @text-color;
+
+    display: flex;
+    flex-direction: column;
+
+    > header, > footer, > main > .sidebar, > main > .content
+    {
+        position: relative;
+    }
+
+    > header
+    {
+        color:white;
+        background-color: @nmr-app-color;
+        flex:0 0 @nmr-app-header-height;
+        display: flex;
+        align-items: center;
+
+        > h1
+        {
+            margin-left: 24px;
+        }
+    }
+
+    > main
+    {
+        flex:1 1 auto;
+        display: flex;
+        flex-direction: row;
+
+        > .sidebar
+        {
+            background-color: @nmr-app-darker-bg;
+            flex:0 0 @nmr-app-sidebar-width;
+            border-right: 1px solid @nmr-separator-color;
+            overflow-y: auto;
+        }
+
+        > .content
+        {
+            flex:1 1 auto;
+            overflow-y: auto;
+        }
+    }
+
+    > footer
+    {
+        background-color: @nmr-app-darker-bg;
+        border-top: 1px solid @nmr-separator-color;
+        flex:0 0 @nmr-app-footer-height;
+    }
+}
