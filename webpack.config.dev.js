@@ -9,7 +9,7 @@ module.exports = {
 
     entry: {
         vendor: [ "jquery" ],
-        nmr: [ "./nmr/index.js", "./nmr/res/index.less" ]
+        nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ]
     },
 
     output: {
