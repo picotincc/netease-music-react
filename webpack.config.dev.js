@@ -8,7 +8,7 @@ module.exports = {
     context: path.resolve("./src"),
 
     entry: {
-        vendor: [ "jquery", "babel-polyfill" ],
+        vendor: [ "jquery" ],
         nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ]
     },
 
@@ -37,9 +37,9 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-
-        new webpack.NoErrorsPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
+        //
+        // new webpack.NoErrorsPlugin(),
 
         new webpack.ProvidePlugin({
             "$": "jquery"
@@ -57,8 +57,13 @@ module.exports = {
     devServer: {
         proxy: {
             "/api/*": {
-                target: "http://music.163.com/",
-                host: "music.163.com",
+                "target": {
+                  "host": "music.163.com",
+                  "protocol": 'http:',
+                  "port": 80
+                },
+                ignorePath: false,
+                changeOrigin: true,
                 secure: false,
                 headers: {
                     "Referer": "http://music.163.com"

@@ -10,8 +10,14 @@ export default class App extends Component {
 
     async run()
     {
+        // api.search('年度之歌',data => {
+        //     console.log(data)
+        // });
         const userId = await ServiceClient.getInstance().login();
         console.log(userId);
+        const playlist = await ServiceClient.getInstance().getUserPlayLists();
+        console.log(playlist);
+        // ServiceClient.getInstance().getUserPlayListsByPromise();
     }
 
     render() {
