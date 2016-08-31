@@ -65,9 +65,9 @@ module.exports = {
                 ignorePath: false,
                 changeOrigin: true,
                 secure: false,
-                headers: {
-                    "Referer": "http://music.163.com"
-                }
+                // headers: {
+                //     "Referer": "http://music.163.com"
+                // }
             }
         }
     }
