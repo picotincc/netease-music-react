@@ -27,8 +27,9 @@ export default class PlayList extends Component {
         const self = this;
         return (
             <ul className="nmr-play-list-view">
-            {playlists.map(function(item) {
-                return <li onClick={self.handleClick} key={item.id}>{item.name}</li>
+            {playlists.map(function(item, i) {
+                let id = item.id;
+                return <li onClick={self.handleClick.bind(this, id)} key={item.id}>{item.name}</li>
             })}
             </ul>
         );
@@ -45,8 +46,8 @@ export default class PlayList extends Component {
         this.setState({ playLists: playlists });
     }
 
-    handleClick(e)
+    handleClick(i)
     {
-        console.log(e);
+        console.log(i);
     }
 }
