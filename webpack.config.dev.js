@@ -9,7 +9,7 @@ module.exports = {
 
     entry: {
         vendor: [ "jquery" ],
-        nmr: [ "./nmr/index.js", "./nmr/res/index.less" ]
+        nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ]
     },
 
     output: {
@@ -37,9 +37,9 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-
-        new webpack.NoErrorsPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
+        //
+        // new webpack.NoErrorsPlugin(),
 
         new webpack.ProvidePlugin({
             "$": "jquery"
@@ -57,12 +57,17 @@ module.exports = {
     devServer: {
         proxy: {
             "/api/*": {
-                target: "http://music.163.com/",
-                host: "music.163.com",
+                "target": {
+                  "host": "music.163.com",
+                  "protocol": 'http:',
+                  "port": 80
+                },
+                ignorePath: false,
+                changeOrigin: true,
                 secure: false,
-                headers: {
-                    "Referer": "http://music.163.com"
-                }
+                // headers: {
+                //     "Referer": "http://music.163.com"
+                // }
             }
         }
     }
