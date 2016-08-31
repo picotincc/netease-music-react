@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
 
+import PlayList from "./PlayList";
 import ServiceClient from "../service/ServiceClient";
 
 export default class App extends Component {
-    componentDidMount = () => {
+
+    constructor(props) {
+        super(props);
         console.log("App is running");
         this.run();
     }
 
-    async run()
-    {
-        // api.search('年度之歌',data => {
-        //     console.log(data)
-        // });
-        const userId = await ServiceClient.getInstance().login();
-        console.log(userId);
-        const playlist = await ServiceClient.getInstance().getUserPlayLists();
-        console.log(playlist);
-        // ServiceClient.getInstance().getUserPlayListsByPromise();
+    static defaultProps = {
+        userId: ""
+    }
+
+    static propTypes = {
+        userId: React.PropTypes.string.isRequired
+    }
+
+    state = {
+        playlist: []
     }
 
     render() {
+        console.log();
         return (
           <div className="nmr-app">
                 <header>
@@ -28,11 +32,25 @@ export default class App extends Component {
                     <h1>网易云音乐</h1>
                 </header>
                 <main>
-                    <aside className="sidebar"></aside>
+                    <aside className="sidebar">
+                        <PlayList userId={this.props.userId} />
+                    </aside>
                     <section className="content"></section>
                 </main>
                 <footer></footer>
           </div>
         )
+    }
+
+    componentDidMount()
+    {
+
+    }
+
+    async run()
+    {
+        console.log(this.props.userId + "app");
+        // const playlist = await ServiceClient.getInstance().getUserPlayLists();
+        // console.log(playlist);
     }
 }

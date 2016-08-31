@@ -1,0 +1,30 @@
+.nmr-play-list-view
+{
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+
+    line-height: @nmr-list-item-height;
+
+    li
+    {
+        display: block;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+        overflow-x: hidden;
+        cursor: default;
+
+        padding-left: 32px;
+        padding-right: 16px;
+        text-overflow: ellipsis;
+
+        &.selected
+        {
+            color: @nmr-selection-color;
+            background: @nmr-selection-bg;
+        }
+    }
+}

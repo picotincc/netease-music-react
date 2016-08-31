@@ -13,3 +13,8 @@
 
 ### 2016-08-31 17:40
  - **proxy**: webpack-dev-server 1.15.0 and webpack-dev-server 1.14.1 different configuation
+
+### 2016-09-01 02:38
+ - react component App
+ - event handlers
+ - redux?
