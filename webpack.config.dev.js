@@ -8,7 +8,7 @@ module.exports = {
     context: path.resolve("./src"),
 
     entry: {
-        vendor: [ "jquery", "babel-polyfill" ],
+        vendor: [ "jquery" ],
         nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ]
     },
 
@@ -18,9 +18,9 @@ module.exports = {
         filename: "[name]/bundle.js"
     },
 
-    resolve: {
-        extensions: [ "", ".js", ".less" ]
-    },
+    // resolve: {
+    //     extensions: [ "", ".js", ".less" ]
+    // },
 
     module: {
         loaders: [
@@ -37,9 +37,9 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-
-        new webpack.NoErrorsPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
+        //
+        // new webpack.NoErrorsPlugin(),
 
         new webpack.ProvidePlugin({
             "$": "jquery"
