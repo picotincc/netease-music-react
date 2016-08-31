@@ -34,22 +34,6 @@ export default class ServiceClient
         this._userId = "78843035";
     }
 
-    getUserPlayListsByPromise(uid = this.userId)
-{
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: `${NM_API_URL}/user/playlist/`,
-            data: {
-                uid,
-                limit: 1000,
-                offset: 0
-            }
-        }).then(data => {
-            resolve(data);
-        });
-    });
-}
-
     async getUserPlayLists(uid = this.userId)
     {
         let res = null;

@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/maybeShuo/netease-music-react#readme",
   "devDependencies": {
-    "NeteaseCloudMusicApi": "^1.5.1",
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-react-transform": "^2.0.2",

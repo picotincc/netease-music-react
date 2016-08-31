@@ -18,9 +18,9 @@ module.exports = {
         filename: "[name]/bundle.js"
     },
 
-    // resolve: {
-    //     extensions: [ "", ".js", ".less" ]
-    // },
+    resolve: {
+        extensions: [ "", ".js", ".less" ]
+    },
 
     module: {
         loaders: [
@@ -57,8 +57,13 @@ module.exports = {
     devServer: {
         proxy: {
             "/api/*": {
-                target: "http://music.163.com/",
-                host: "music.163.com",
+                "target": {
+                  "host": "music.163.com",
+                  "protocol": 'http:',
+                  "port": 80
+                },
+                ignorePath: false,
+                changeOrigin: true,
                 secure: false,
                 headers: {
                     "Referer": "http://music.163.com"

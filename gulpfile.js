@@ -27,16 +27,7 @@ gulp.task("dev", [ "clean" ], cb => {
 
     new WebpackDevServer(complier, {
         publicPath: config.output.publicPath,
-        proxy: {
-            "/api/*": {
-                target: "http://music.163.com",
-                host: "music.163.com",
-                secure: false,
-                headers: {
-                    "Referer": "http://music.163.com"
-                }
-            }
-        }
+        proxy: config.devServer.proxy
     }).listen(8080, "localhost", err => {
         if (err) {
             throw new gutil.PluginError("webpack-dev-server", err);
