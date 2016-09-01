@@ -6,7 +6,6 @@ export default class PlayList extends Component {
 
     constructor (props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
     }
 
     static defaultProps = {
@@ -27,9 +26,9 @@ export default class PlayList extends Component {
         const self = this;
         return (
             <ul className="nmr-play-list-view">
-            {playlists.map(function(item, i) {
+            {playlists.map((item, i) => {
                 let id = item.id;
-                return <li onClick={self.handleClick.bind(this, id)} key={item.id}>{item.name}</li>
+                return <li onClick={() => self.props.handleClick(id)} key={item.id}>{item.name}</li>
             })}
             </ul>
         );
@@ -44,10 +43,5 @@ export default class PlayList extends Component {
     {
         const playlists = await ServiceClient.getInstance().getUserPlayLists();
         this.setState({ playLists: playlists });
-    }
-
-    handleClick(i)
-    {
-        console.log(i);
     }
 }

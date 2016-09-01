@@ -8,7 +8,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         console.log("App is running");
-        this.run();
+        this.handlePlayListClick = this.handlePlayListClick.bind(this);
     }
 
     static defaultProps = {
@@ -20,11 +20,10 @@ export default class App extends Component {
     }
 
     state = {
-        playlist: []
+        selectedPlayList: null
     }
 
     render() {
-        console.log();
         return (
           <div className="nmr-app">
                 <header>
@@ -33,7 +32,7 @@ export default class App extends Component {
                 </header>
                 <main>
                     <aside className="sidebar">
-                        <PlayList userId={this.props.userId} />
+                        <PlayList userId={this.props.userId} handleClick={this.handlePlayListClick}/>
                     </aside>
                     <section className="content"></section>
                 </main>
@@ -47,10 +46,8 @@ export default class App extends Component {
 
     }
 
-    async run()
+    handlePlayListClick(id, e)
     {
-        console.log(this.props.userId + "app");
-        // const playlist = await ServiceClient.getInstance().getUserPlayLists();
-        // console.log(playlist);
+        console.log(id);
     }
 }
