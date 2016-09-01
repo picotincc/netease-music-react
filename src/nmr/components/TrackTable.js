@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ServiceClient from "../service/ServiceClient";
+import TimeUtil from "../util/TimeUtil";
 
 export default class TrackTable extends Component {
 
@@ -34,12 +35,22 @@ export default class TrackTable extends Component {
                 <tbody>
                     {playlist.map((item, i) => {
                         let id = item.id;
+                        let duration = 0;
+                        if (item.lMusic)
+                        {
+                            duration = item.lMusic.playTime;
+                        }
+                        else
+                        {
+                            duration = item.duration;
+                        }
+                        let time = TimeUtil.formatPlayTime(duration);
                         return (
                             <tr key={item.id}>
                                 <td>{item.name}</td>
                                 <td>{item.artists.map(artist => artist.name).join(",")}</td>
                                 <td>{item.album.name}</td>
-                                <td>time</td>
+                                <td>{time}</td>
                             </tr>
                         );
                     })}
@@ -55,7 +66,6 @@ export default class TrackTable extends Component {
 
     componentWillReceiveProps(nextProps)
     {
-        console.log(nextProps, "will receiveProps");
         this._loaderPlayList(nextProps.playlistId);
     }
 
