@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import PlayList from "./PlayList";
 import ServiceClient from "../service/ServiceClient";
+import TrackTable from "./TrackTable";
 
 export default class App extends Component {
 
@@ -34,7 +35,9 @@ export default class App extends Component {
                     <aside className="sidebar">
                         <PlayList userId={this.props.userId} handleClick={this.handlePlayListClick}/>
                     </aside>
-                    <section className="content"></section>
+                    <section className="content">
+                        <TrackTable playlistId={this.state.selectedPlayList} />
+                    </section>
                 </main>
                 <footer></footer>
           </div>
@@ -48,6 +51,6 @@ export default class App extends Component {
 
     handlePlayListClick(id, e)
     {
-        console.log(id);
+        this.setState({ selectedPlayList: id });
     }
 }
