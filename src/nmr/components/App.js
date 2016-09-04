@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 
 import PlayList from "./PlayList";
-import ServiceClient from "../service/ServiceClient";
+import ServiceClient from "../service/ServiceClientP";
+import TrackTable from "./TrackTable";
 
 export default class App extends Component {
 
     constructor(props) {
         super(props);
         console.log("App is running");
-        this.run();
+        this.handlePlayListClick = this.handlePlayListClick.bind(this);
     }
 
     static defaultProps = {
@@ -20,11 +21,10 @@ export default class App extends Component {
     }
 
     state = {
-        playlist: []
+        selectedPlayList: null
     }
 
     render() {
-        console.log();
         return (
           <div className="nmr-app">
                 <header>
@@ -33,9 +33,11 @@ export default class App extends Component {
                 </header>
                 <main>
                     <aside className="sidebar">
-                        <PlayList userId={this.props.userId} />
+                        <PlayList userId={this.props.userId} handleClick={this.handlePlayListClick}/>
                     </aside>
-                    <section className="content"></section>
+                    <section className="content">
+                        <TrackTable playlistId={this.state.selectedPlayList} />
+                    </section>
                 </main>
                 <footer></footer>
           </div>
@@ -47,10 +49,8 @@ export default class App extends Component {
 
     }
 
-    async run()
+    handlePlayListClick(id)
     {
-        console.log(this.props.userId + "app");
-        // const playlist = await ServiceClient.getInstance().getUserPlayLists();
-        // console.log(playlist);
+        this.setState({ selectedPlayList: id });
     }
 }

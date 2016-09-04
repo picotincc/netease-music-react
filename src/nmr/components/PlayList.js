@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import ServiceClient from "../service/ServiceClient";
+import ServiceClient from "../service/ServiceClientP";
 
 export default class PlayList extends Component {
 
     constructor (props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
+        this._selectedId = "";
+        this.onSelectionChange = this.onSelectionChange.bind(this);
     }
 
     static defaultProps = {
@@ -21,15 +22,33 @@ export default class PlayList extends Component {
         playLists: []
     }
 
+    get selectedId()
+    {
+        return this._selectedId;
+    }
+
+    set selectedId(value)
+    {
+        if (value !== this._selectedId)
+        {
+            if (this._selectedId)
+            {
+                this.refs[this._selectedId].classList.remove("selected");
+            }
+            this._selectedId = value;
+            this.refs[this._selectedId].classList.add("selected");
+        }
+    }
+
     render()
     {
         const playlists = this.state.playLists;
         const self = this;
         return (
             <ul className="nmr-play-list-view">
-            {playlists.map(function(item, i) {
+            {playlists.map((item, i) => {
                 let id = item.id;
-                return <li onClick={self.handleClick.bind(this, id)} key={item.id}>{item.name}</li>
+                return <li onClick={() => this.onSelectionChange(id)} ref={item.id} key={item.id}>{item.name}</li>
             })}
             </ul>
         );
@@ -40,14 +59,17 @@ export default class PlayList extends Component {
         this._loaderUserPlayLists();
     }
 
-    async _loaderUserPlayLists()
+    _loaderUserPlayLists()
     {
-        const playlists = await ServiceClient.getInstance().getUserPlayLists();
-        this.setState({ playLists: playlists });
+        ServiceClient.getInstance().getUserPlayLists().then(res => {
+            this.setState({ playLists: res });
+        });
     }
 
-    handleClick(i)
+    onSelectionChange(id)
     {
-        console.log(i);
+        this.props.handleClick(id);
+        this.selectedId = id;
     }
+
 }
