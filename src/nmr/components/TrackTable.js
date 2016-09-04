@@ -21,7 +21,6 @@ export default class TrackTable extends Component {
     {
         const playlist = this.state.playlist;
         const self = this;
-        console.log(playlist);
         return (
             <table className="nmr-track-table-view">
                 <thead>
@@ -74,8 +73,8 @@ export default class TrackTable extends Component {
         if(id && id !== "")
         {
             const playlist = await ServiceClient.getInstance().getPlayListDetail(id);
-            console.log(playlist);
             this.setState({ playlist: playlist.tracks });
         }
     }
+
 }

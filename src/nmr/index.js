@@ -2,13 +2,13 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import App from './components/App';
-import ServiceClient from "./service/ServiceClient";
+import ServiceClient from "./service/ServiceClientP";
 
 
 
-async function run()
+function run()
 {
-    const userId = await ServiceClient.getInstance().login();
+    const userId = ServiceClient.getInstance().login();
     render(
         <App userId={userId}/>,
         document.getElementById('root')

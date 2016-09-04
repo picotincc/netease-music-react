@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import PlayList from "./PlayList";
-import ServiceClient from "../service/ServiceClient";
+import ServiceClient from "../service/ServiceClientP";
 import TrackTable from "./TrackTable";
 
 export default class App extends Component {
@@ -49,7 +49,7 @@ export default class App extends Component {
 
     }
 
-    handlePlayListClick(id, e)
+    handlePlayListClick(id)
     {
         this.setState({ selectedPlayList: id });
     }
