@@ -10,16 +10,12 @@ export default class TrackTable extends Component {
     }
 
     static defaultProps = {
-        playlistId: ""
-    }
-
-    state = {
         playlist: []
     }
 
     render()
     {
-        const playlist = this.state.playlist;
+        const playlist = this.props.playlist;
         const self = this;
         return (
             <table className="nmr-track-table-view">
@@ -60,21 +56,8 @@ export default class TrackTable extends Component {
 
     componentDidMount()
     {
-        this._loaderPlayList(this.props.playlistId);
+
     }
 
-    componentWillReceiveProps(nextProps)
-    {
-        this._loaderPlayList(nextProps.playlistId);
-    }
-
-    async _loaderPlayList(id)
-    {
-        if(id && id !== "")
-        {
-            const playlist = await ServiceClient.getInstance().getPlayListDetail(id);
-            this.setState({ playlist: playlist.tracks });
-        }
-    }
 
 }
