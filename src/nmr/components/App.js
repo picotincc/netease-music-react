@@ -21,10 +21,11 @@ export default class App extends Component {
     }
 
     state = {
-        selectedPlayList: null
+        selectedPlayList: [],
     }
 
     render() {
+        console.log("render-app");
         return (
           <div className="nmr-app">
                 <header>
@@ -36,7 +37,7 @@ export default class App extends Component {
                         <PlayList userId={this.props.userId} handleClick={this.handlePlayListClick}/>
                     </aside>
                     <section className="content">
-                        <TrackTable playlistId={this.state.selectedPlayList} />
+                        <TrackTable playlist={this.state.selectedPlayList} />
                     </section>
                 </main>
                 <footer></footer>
@@ -51,6 +52,12 @@ export default class App extends Component {
 
     handlePlayListClick(id)
     {
-        this.setState({ selectedPlayList: id });
+        if(id && id !== "")
+        {
+            ServiceClient.getInstance().getPlayListDetail(id).then(playlist => {
+                this.setState({ selectedPlayList: playlist.tracks });
+            });
+        }
     }
+
 }

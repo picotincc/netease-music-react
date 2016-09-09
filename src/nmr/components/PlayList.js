@@ -8,6 +8,8 @@ export default class PlayList extends Component {
         super(props);
         this._selectedId = "";
         this.onSelectionChange = this.onSelectionChange.bind(this);
+
+        this._loaderUserPlayLists();
     }
 
     static defaultProps = {
@@ -42,6 +44,7 @@ export default class PlayList extends Component {
 
     render()
     {
+        console.log("render-playlists");
         const playlists = this.state.playLists;
         const self = this;
         return (
@@ -56,13 +59,25 @@ export default class PlayList extends Component {
 
     componentDidMount()
     {
-        this._loaderUserPlayLists();
+        // this._loaderUserPlayLists();
+    }
+
+    shouldComponentUpdate(nextProps, nextState)
+    {
+        // console.log(nextProps, this.props, nextState, this.state);
+        if (nextState.playLists === this.state.playLists)
+        {
+            // console.log("false");
+            return false;
+        }
+        return true;
     }
 
     _loaderUserPlayLists()
     {
         ServiceClient.getInstance().getUserPlayLists().then(res => {
             this.setState({ playLists: res });
+            this.onSelectionChange(res[0].id);
         });
     }
 
