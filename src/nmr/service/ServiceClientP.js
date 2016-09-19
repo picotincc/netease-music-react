@@ -23,9 +23,10 @@ export default class ServiceClient
         return this._userId;
     }
 
-    login()
+    login(userId)
     {
-        this.__pseudoLogin();
+        this._userId = userId;
+        // this.__pseudoLogin(user);
         return this._userId;
     }
 

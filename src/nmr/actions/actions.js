@@ -1,3 +1,5 @@
+import ServiceClient from "../service/ServiceClientP";
+
 /*
  * action 类型
  */
@@ -10,15 +12,29 @@ export const ACTIVE_SELECTED_PlAYLIST = 'ACTIVE_SELECTED_PlAYLIST';
  */
 export function login(userId)
 {
-    return { type: "login", userId };
+    const id = ServiceClient.getInstance().login(userId);
+    return {
+        type: "login",
+        userId: id
+    };
 }
 
-export function loadUserPlayLists(playlists)
+export function loadUserPlayLists()
 {
-  return { type: ACTIVE_USER_PLAYLISTS, playlists };
+    ServiceClient.getInstance().getUserPlayLists().then(res => {
+        return {
+            type: ACTIVE_USER_PLAYLISTS,
+            playlists: res
+        };
+    });
 }
 
-export function activeSelectedPlayList(playlist)
+export function activeSelectedPlayList(playlistId)
 {
-  return { type: ACTIVE_SELECTED_PlAYLIST, playlist };
+    ServiceClient.getInstance().getPlayListDetail(playlistId).then(res => {
+        return {
+            type: ACTIVE_SELECTED_PlAYLIST,
+            playlist: res.tracks
+        };
+    });
 }

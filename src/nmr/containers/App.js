@@ -41,7 +41,7 @@ class App extends Component {
                     <aside className="sidebar">
                         <PlayList
                             playlists={userPlayLists}
-                            handleClick={playlist => dispatch(activeSelectedPlayList(playlist))}
+                            handleClick={playlistId => dispatch(activeSelectedPlayList(playlistId))}
                         />
                     </aside>
                     <section className="content">
@@ -60,20 +60,15 @@ class App extends Component {
 
     _login()
     {
-        const userId = ServiceClient.getInstance().login();
+        const userId = "78843035";
         const dispatch = this.props.dispatch;
         dispatch(login(userId));
     }
 
     _loadUserPlayLists()
     {
-        ServiceClient.getInstance().getUserPlayLists().then(res => {
-            const dispatch = this.props.dispatch;
-            if (res && res.length > 0)
-            {
-                dispatch(loadUserPlayLists(res));
-            }
-        });
+        const dispatch = this.props.dispatch;
+        dispatch(loadUserPlayLists());
     }
 }
 

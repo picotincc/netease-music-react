@@ -69,10 +69,8 @@ export default class PlayList extends Component {
 
     onSelectionChange(id)
     {
-        ServiceClient.getInstance().getPlayListDetail(id).then(res => {
-            this.props.handleClick(res.tracks);
-            this.selectedId = id;
-        });
+        this.props.handleClick(id);
+        this.selectedId = id;
     }
 
 }
