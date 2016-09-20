@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import ReactPlayer from "react-player";
 
+import Player from "./Player";
 import PlayList from "./PlayList";
 import ServiceClient from "../service/ServiceClientP";
 import TrackTable from "./TrackTable";
@@ -10,6 +12,7 @@ export default class App extends Component {
         super(props);
         console.log("App is running");
         this.handlePlayListClick = this.handlePlayListClick.bind(this);
+        this.handleSongClick = this.handleSongClick.bind(this);
     }
 
     static defaultProps = {
@@ -22,6 +25,7 @@ export default class App extends Component {
 
     state = {
         selectedPlayList: [],
+        selectedSong: null
     }
 
     render() {
@@ -37,10 +41,12 @@ export default class App extends Component {
                         <PlayList userId={this.props.userId} handleClick={this.handlePlayListClick}/>
                     </aside>
                     <section className="content">
-                        <TrackTable playlist={this.state.selectedPlayList} />
+                        <TrackTable playlist={this.state.selectedPlayList} handleClick={this.handleSongClick}/>
                     </section>
                 </main>
-                <footer></footer>
+                <footer>
+                    <Player song={this.state.selectedSong}/>
+                </footer>
           </div>
         )
     }
@@ -58,6 +64,14 @@ export default class App extends Component {
                 this.setState({ selectedPlayList: playlist.tracks });
             });
         }
+    }
+
+    handleSongClick(song)
+    {
+        console.log(song);
+        this.setState({
+            selectedSong: song
+        })
     }
 
 }
