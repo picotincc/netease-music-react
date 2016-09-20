@@ -29,7 +29,6 @@ export default class App extends Component {
     }
 
     render() {
-        console.log("render-app");
         return (
           <div className="nmr-app">
                 <header>
@@ -68,7 +67,6 @@ export default class App extends Component {
 
     handleSongClick(song)
     {
-        console.log(song);
         this.setState({
             selectedSong: song
         })

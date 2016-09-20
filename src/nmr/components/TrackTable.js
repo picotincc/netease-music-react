@@ -39,7 +39,6 @@ export default class TrackTable extends Component {
 
     render()
     {
-        console.log("render-tracktable");
         const playlist = this.props.playlist;
         const self = this;
         return (
@@ -81,7 +80,6 @@ export default class TrackTable extends Component {
 
     onSelectionChange(id)
     {
-        console.log(this.refs);
         this.selectedId = id;
         const selectedSong = this.props.playlist.find((item) => {
             return item.id === id ? true : false;

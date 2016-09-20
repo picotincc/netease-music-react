@@ -6,13 +6,19 @@
 
     > .player-controls
     {
-        flex: 1 0 auto;
+        flex: 0 0 200px;
+        display: flex;
+        padding: 16px 16px;
 
-        > span
+        .icon
         {
-            width: 32px;
-            height: 32px;
+            flex: 1 0 auto;
+            font-size: 28px;
             cursor: pointer;
+            color: @nmr-app-color;
+            display: flex;
+            align-content: center;
+            justify-content: center;
         }
     }
 
