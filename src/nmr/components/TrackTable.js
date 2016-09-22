@@ -12,10 +12,6 @@ export default class TrackTable extends Component {
     }
 
     static defaultProps = {
-        playlistId: ""
-    }
-
-    state = {
         playlist: []
     }
 

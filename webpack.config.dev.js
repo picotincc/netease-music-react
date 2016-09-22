@@ -9,7 +9,8 @@ module.exports = {
 
     entry: {
         vendor: [ "jquery" ],
-        nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ]
+        nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ],
+        // todo: [ "./todo/index.js" ]
     },
 
     output: {
@@ -29,7 +30,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 loaders: [ "babel" ],
-                include: path.join(__dirname, 'src/nmr')
+                include: path.join(__dirname, 'src/')
             },
             {
                 test: /\.less$/,
