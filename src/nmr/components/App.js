@@ -67,9 +67,11 @@ export default class App extends Component {
 
     handleSongClick(song)
     {
-        this.setState({
-            selectedSong: song
-        })
+        ServiceClient.getInstance().getSongDetail(song.id).then(res => {
+            this.setState({
+                selectedSong: res[0]
+            });
+        });
     }
 
 }
