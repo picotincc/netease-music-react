@@ -51,6 +51,7 @@ export default class Player extends Component {
                     <span ref="curTime" className="current-time">00:00</span>
                     <div className="play-time">
                         <div ref="playingBar" className="playing-bar"></div>
+                        <div ref="playingIcon" className="playing-icon iconfont icon-circle1"></div>
                     </div>
                     <span className="duration">{duration ? duration : "00:00"}</span>
                 </div>
@@ -76,8 +77,9 @@ export default class Player extends Component {
         };
         this.audio.ontimeupdate = () => {
             this.refs["curTime"].innerHTML = TimeUtil.formatAudioCurTime(this.audio.currentTime);
-            let width = Math.round(714 * Math.round(this.audio.currentTime)/Math.round(this.audio.duration));
-            this.refs["playingBar"].style.width = width + "px";
+            let offset = Math.round(714 * Math.round(this.audio.currentTime)/Math.round(this.audio.duration));
+            this.refs["playingBar"].style.width = offset + "px";
+            this.refs["playingIcon"].style.left = (320 + offset) + "px";
         };
     }
 
@@ -116,8 +118,8 @@ export default class Player extends Component {
         {
             if (nextProps.song.mp3Url)
             {
-                this.player.classList.remove("icon-play1");
-                this.player.classList.add("icon-zanting2");
+                this.player.classList.remove("icon-play");
+                this.player.classList.add("icon-pause");
                 this.isPlaying = true;
             }
         }
