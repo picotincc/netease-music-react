@@ -44,12 +44,15 @@ export default class Player extends Component {
             <div className="nmr-player">
                 <div className="player-controls">
                     <span ref="previous" className="icon iconfont icon-previous"></span>
-                    <span ref="player" className="icon iconfont icon-play1" onClick={this.handlePlayerClick}></span>
+                    <span ref="player" className="icon iconfont icon-play" onClick={this.handlePlayerClick}></span>
                     <span ref="next" className="icon iconfont icon-next"></span>
                 </div>
                 <div className="time-bar">
                     <span ref="curTime" className="current-time">00:00</span>
-                    <div className="play-time"></div>
+                    <div className="play-time">
+                        <div ref="playingBar" className="playing-bar"></div>
+                        <div ref="playingIcon" className="playing-icon iconfont icon-circle1"></div>
+                    </div>
                     <span className="duration">{duration ? duration : "00:00"}</span>
                 </div>
                 <audio
@@ -67,12 +70,16 @@ export default class Player extends Component {
         this.player = this.refs["player"];
         this.audio = this.refs["audio"];
         this.audio.onended = () => {
-            this.player.classList.remove("icon-zanting2");
-            this.player.classList.add("icon-play1");
+            this.player.classList.remove("icon-pause");
+            this.player.classList.add("icon-play");
             this.isPlaying = false;
+            this.refs["playingBar"].style.width = "0px";
         };
         this.audio.ontimeupdate = () => {
             this.refs["curTime"].innerHTML = TimeUtil.formatAudioCurTime(this.audio.currentTime);
+            let offset = Math.round(714 * Math.round(this.audio.currentTime)/Math.round(this.audio.duration));
+            this.refs["playingBar"].style.width = offset + "px";
+            this.refs["playingIcon"].style.left = (320 + offset) + "px";
         };
     }
 
@@ -88,15 +95,15 @@ export default class Player extends Component {
     {
         if (this.isPlaying === false)
         {
-            this.player.classList.remove("icon-play1");
-            this.player.classList.add("icon-zanting2");
+            this.player.classList.remove("icon-play");
+            this.player.classList.add("icon-pause");
             this.audio.play();
             this.isPlaying = true;
         }
         else
         {
-            this.player.classList.remove("icon-zanting2");
-            this.player.classList.add("icon-play1");
+            this.player.classList.remove("icon-pause");
+            this.player.classList.add("icon-play");
             this.audio.pause();
             this.isPlaying = false;
         }
@@ -111,8 +118,8 @@ export default class Player extends Component {
         {
             if (nextProps.song.mp3Url)
             {
-                this.player.classList.remove("icon-play1");
-                this.player.classList.add("icon-zanting2");
+                this.player.classList.remove("icon-play");
+                this.player.classList.add("icon-pause");
                 this.isPlaying = true;
             }
         }

@@ -79,6 +79,35 @@ export default class ServiceClient
         });
     }
 
+    getSongDetail(ids)
+    {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${NM_API_URL}/song/detail?ids=[${ids}]`,
+                // data: {
+                //     ids
+                // }
+            }).always(res => {
+                let result = null;
+                if (typeof res === "string") {
+                    result = JSON.parse(res);
+                }
+                else
+                {
+                    result = res;
+                }
+                if (result.code === 200 )
+                {
+                    resolve(result.songs);
+                }
+                else
+                {
+                    reject("Response with error code:" + result.code);
+                }
+            });
+        });
+    }
+
     search(keyword, suggest = false)
     {
         return new Promise((resolve, reject) => {
