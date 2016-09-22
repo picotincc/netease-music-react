@@ -94,8 +94,10 @@ export default class TrackTable extends Component {
 
     componentWillReceiveProps(nextProps)
     {
-        // this.selectedId = null;
-        // this._loaderPlayList(nextProps.playlistId);
+        if (nextProps.playlist !== this.props.playlist)
+        {
+            this._selectedId = "";
+        }
     }
 
 

@@ -25,6 +25,34 @@
     > .time-bar
     {
         flex: 4 0 auto;
+        display: flex;
+        padding: 16px 16px;
+        justify-content: center;
+
+        span, div
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6px 6px;
+            color: @text-color;
+        }
+
+        > .current-time
+        {
+            flex: 0 0 100px;
+        }
+
+        > .play-time
+        {
+            flex: 1 0 auto;
+        }
+
+        > .duration
+        {
+            flex: 0 0 100px;
+        }
+
     }
 
     > audio

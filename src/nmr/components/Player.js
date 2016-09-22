@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import ServiceClient from "../service/ServiceClient";
+import TimeUtil from "../util/TimeUtil";
+
 
 export default class Player extends Component {
 
@@ -30,10 +32,12 @@ export default class Player extends Component {
 
     render()
     {
-        var url = "";
+        let url = "";
+        let duration = 0;
         if (this.props.song)
         {
             url = this.props.song.mp3Url;
+            duration = TimeUtil.formatPlayTime(this.props.song.duration);
         }
         return (
 
@@ -43,7 +47,11 @@ export default class Player extends Component {
                     <span ref="player" className="icon iconfont icon-play1" onClick={this.handlePlayerClick}></span>
                     <span ref="next" className="icon iconfont icon-next"></span>
                 </div>
-                <div className="time-bar"></div>
+                <div className="time-bar">
+                    <span ref="curTime" className="current-time">00:00</span>
+                    <div className="play-time"></div>
+                    <span className="duration">{duration ? duration : "00:00"}</span>
+                </div>
                 <audio
                     ref="audio"
                     src={url}
@@ -58,11 +66,22 @@ export default class Player extends Component {
     {
         this.player = this.refs["player"];
         this.audio = this.refs["audio"];
+        this.audio.onended = () => {
+            this.player.classList.remove("icon-zanting2");
+            this.player.classList.add("icon-play1");
+            this.isPlaying = false;
+        };
+        this.audio.ontimeupdate = () => {
+            this.refs["curTime"].innerHTML = TimeUtil.formatAudioCurTime(this.audio.currentTime);
+        };
     }
 
     handlePlayerClick()
     {
-        this.toggleIsPlaying();
+        if (this.props.song)
+        {
+            this.toggleIsPlaying();
+        }
     }
 
     toggleIsPlaying()
