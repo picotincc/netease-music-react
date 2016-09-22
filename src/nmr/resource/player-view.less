@@ -1,0 +1,62 @@
+.nmr-player
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    > .player-controls
+    {
+        flex: 0 0 200px;
+        display: flex;
+        padding: 16px 16px;
+
+        .icon
+        {
+            flex: 1 0 auto;
+            font-size: 28px;
+            cursor: pointer;
+            color: @nmr-app-color;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+    }
+
+    > .time-bar
+    {
+        flex: 4 0 auto;
+        display: flex;
+        padding: 16px 16px;
+        justify-content: center;
+
+        span, div
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6px 6px;
+            color: @text-color;
+        }
+
+        > .current-time
+        {
+            flex: 0 0 100px;
+        }
+
+        > .play-time
+        {
+            flex: 1 0 auto;
+        }
+
+        > .duration
+        {
+            flex: 0 0 100px;
+        }
+
+    }
+
+    > audio
+    {
+        flex: 0 0 300px;
+    }
+}

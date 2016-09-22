@@ -31,8 +31,8 @@ export default class ServiceClient
 
     __pseudoLogin()
     {
-        // this._userId = "78843035";
-        this._userId = "260616759";
+        this._userId = "78843035";
+        // this._userId = "260616759";
     }
 
     getUserPlayLists(uid = this.userId)

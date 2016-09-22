@@ -7,6 +7,8 @@ export default class TrackTable extends Component {
 
     constructor (props) {
         super(props);
+        this._selectedId = "";
+        this.onSelectionChange = this.onSelectionChange.bind(this);
     }
 
     static defaultProps = {
@@ -17,9 +19,26 @@ export default class TrackTable extends Component {
         playlist: []
     }
 
+    get selectedId()
+    {
+        return this._selectedId;
+    }
+
+    set selectedId(value)
+    {
+        if (value !== this._selectedId)
+        {
+            if (this._selectedId && this.refs[this._selectedId])
+            {
+                this.refs[this._selectedId].classList.remove("selected");
+            }
+            this._selectedId = value;
+            this.refs[this._selectedId].classList.add("selected");
+        }
+    }
+
     render()
     {
-        console.log("render-tracktable");
         const playlist = this.props.playlist;
         const self = this;
         return (
@@ -46,7 +65,7 @@ export default class TrackTable extends Component {
                         }
                         let time = TimeUtil.formatPlayTime(duration);
                         return (
-                            <tr key={item.id}>
+                            <tr key={item.id} ref={item.id} onDoubleClick={() => this.onSelectionChange(item.id)}>
                                 <td>{item.name}</td>
                                 <td>{item.artists.map(artist => artist.name).join(",")}</td>
                                 <td>{item.album.name}</td>
@@ -59,6 +78,15 @@ export default class TrackTable extends Component {
         );
     }
 
+    onSelectionChange(id)
+    {
+        this.selectedId = id;
+        const selectedSong = this.props.playlist.find((item) => {
+            return item.id === id ? true : false;
+        });
+        this.props.handleClick(selectedSong);
+    }
+
     componentDidMount()
     {
         // this._loaderPlayList(this.props.playlistId);
@@ -66,7 +94,10 @@ export default class TrackTable extends Component {
 
     componentWillReceiveProps(nextProps)
     {
-        // this._loaderPlayList(nextProps.playlistId);
+        if (nextProps.playlist !== this.props.playlist)
+        {
+            this._selectedId = "";
+        }
     }
 
 

@@ -44,7 +44,6 @@ export default class PlayList extends Component {
 
     render()
     {
-        console.log("render-playlists");
         const playlists = this.state.playLists;
         const self = this;
         return (
