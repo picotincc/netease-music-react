@@ -6,18 +6,22 @@ export default class PlayList extends Component {
 
     constructor (props) {
         super(props);
-        this._selectedId = null;
+        this._selectedId = "";
         this.onSelectionChange = this.onSelectionChange.bind(this);
 
         this._loaderUserPlayLists();
     }
 
     static defaultProps = {
-        playlists: []
+        userId: ""
     }
 
     static propTypes = {
-        playlists: React.PropTypes.array.isRequired
+        userId: React.PropTypes.string.isRequired
+    }
+
+    state = {
+        playLists: []
     }
 
     get selectedId()
@@ -40,7 +44,7 @@ export default class PlayList extends Component {
 
     render()
     {
-        const playlists = this.props.playlists;
+        const playlists = this.state.playLists;
         const self = this;
         return (
             <ul className="nmr-play-list-view">
@@ -54,7 +58,7 @@ export default class PlayList extends Component {
 
     componentDidMount()
     {
-
+        // this._loaderUserPlayLists();
     }
 
     shouldComponentUpdate(nextProps, nextState)
@@ -68,7 +72,7 @@ export default class PlayList extends Component {
         return true;
     }
 
-    componentWillReceiveProps(nextProps)
+    _loaderUserPlayLists()
     {
         ServiceClient.getInstance().getUserPlayLists().then(res => {
             this.setState({ playLists: res });
@@ -78,10 +82,8 @@ export default class PlayList extends Component {
 
     onSelectionChange(id)
     {
-        ServiceClient.getInstance().getPlayListDetail(id).then(res => {
-            this.props.handleClick(res.tracks);
-            this.selectedId = id;
-        });
+        this.props.handleClick(id);
+        this.selectedId = id;
     }
 
 }
