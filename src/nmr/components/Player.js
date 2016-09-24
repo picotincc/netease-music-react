@@ -51,7 +51,7 @@ export default class Player extends Component {
                     <span ref="curTime" className="current-time">00:00</span>
                     <div className="play-time">
                         <div ref="playingBar" className="playing-bar"></div>
-                        <div ref="playingIcon" className="playing-icon iconfont icon-circle1"></div>
+                        <div ref="playingIcon" draggable="true" className="playing-icon iconfont icon-circle1"></div>
                     </div>
                     <span className="duration">{duration ? duration : "00:00"}</span>
                 </div>
@@ -69,17 +69,67 @@ export default class Player extends Component {
     {
         this.player = this.refs["player"];
         this.audio = this.refs["audio"];
+        this.curTime = this.refs["curTime"];
+        this.playingBar = this.refs["playingBar"];
+        this.playingIcon = this.refs["playingIcon"];
         this.audio.onended = () => {
             this.player.classList.remove("icon-pause");
             this.player.classList.add("icon-play");
             this.isPlaying = false;
-            this.refs["playingBar"].style.width = "0px";
+            this.playingBar.style.width = "0px";
+            this.playingIcon.style.left = 320  + "px";
         };
         this.audio.ontimeupdate = () => {
-            this.refs["curTime"].innerHTML = TimeUtil.formatAudioCurTime(this.audio.currentTime);
+            this.curTime.innerHTML = TimeUtil.formatAudioCurTime(this.audio.currentTime);
             let offset = Math.round(714 * Math.round(this.audio.currentTime)/Math.round(this.audio.duration));
-            this.refs["playingBar"].style.width = offset + "px";
-            this.refs["playingIcon"].style.left = (320 + offset) + "px";
+            this.playingBar.style.width = offset + "px";
+            this.playingIcon.style.left = (320 + offset) + "px";
+        };
+        this.playingIcon.ondragstart = (e) => {
+            const x = e.clientX - this.playingIcon.offsetLeft;
+
+            this.playingIcon.ondrag = (e1) => {
+                let left = e1.clientX - x;
+                let width = 0;
+                if (left < 320)
+                {
+                    left = 320;
+                }
+                else if (left > 1034)
+                {
+                    left = 1034;
+                    width = 714;
+                }
+                else
+                {
+                    width = left - 320;
+                }
+                this.playingIcon.style.left = left + "px";
+                this.playingBar.style.width = width + "px";
+            };
+
+            this.playingIcon.ondragend = (e1) => {
+                let left = e1.clientX - x;
+                let width = 0;
+                if (left < 320)
+                {
+                    left = 320;
+                }
+                else if (left > 1034)
+                {
+                    left = 1034;
+                    width = 714;
+                }
+                else
+                {
+                    width = left - 320;
+                }
+                this.playingIcon.style.left = left + "px";
+                this.playingBar.style.width = width + "px";
+
+                const currentTime = (Math.round(this.audio.duration) * width) / 714;
+                this.audio.currentTime = currentTime;
+            };
         };
     }
 
