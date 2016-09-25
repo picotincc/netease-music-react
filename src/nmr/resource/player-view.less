@@ -68,7 +68,7 @@
                 height: 100%;
                 width: 2px;
                 background-color: @nmr-app-color;
-                transition: width 1s ease;
+                transition: width 0.7s ease;
                 border-radius: 8px;
             }
 
@@ -81,11 +81,12 @@
                 z-index: 100;
                 left: 320px;
                 top: 24px;
-                background: #ccc;
+                background: white;
                 border-radius: 16px;
                 display: flex;
                 align-items: center;
-                transition: left 1s ease;
+                transition: left 0.7s ease;
+                cursor: pointer;
             }
         }
 
@@ -102,8 +103,50 @@
 
     }
 
-    > audio
+    > .volume-control
     {
         flex: 0 0 300px;
+        display: flex;
+
+        > .icon
+        {
+            display: flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        > .volume-section
+        {
+            flex: 0 0 105px;
+            margin-left: 8px;
+            margin-top: 29px;
+            margin-bottom: 29px;
+            position: relative;
+            background-color: #ccc;
+            border-radius: 6px;
+
+            > .volume-bar
+            {
+                background-color: #b02101;
+                height: 6px;
+                width: 53px;
+                border-radius: 8px;
+            }
+
+            > .icon
+            {
+                position: absolute;
+                left: 47px;
+                top: 0px;
+                width: 12px;
+                height: 100%;
+                border-radius: 6px;
+                color: #b02101;
+                z-index: 100;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
     }
 }
