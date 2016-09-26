@@ -29,4 +29,4 @@ A website application by react
  - production: npm run build
 
 ## Capture
-    ![Image of MyCloudMusic](https://raw.githubusercontent.com/maybeShuo/netease-music-react/master/Capture.png)
+![MyCloudMusic](https://raw.githubusercontent.com/maybeShuo/netease-music-react/master/Capture.PNG)
