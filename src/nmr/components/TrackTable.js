@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ServiceClient from "../service/ServiceClient";
+import PlayListDetail from "./PlayListDetail";
 import TimeUtil from "../util/TimeUtil";
 
 export default class TrackTable extends Component {
@@ -12,7 +12,7 @@ export default class TrackTable extends Component {
     }
 
     static defaultProps = {
-        playlist: []
+        playlist: {}
     }
 
     get selectedId()
@@ -36,11 +36,18 @@ export default class TrackTable extends Component {
     render()
     {
         const playlist = this.props.playlist;
+        if (playlist === null) {
+            return (
+                <div className="nmr-track-table-view"></div>
+            );
+        }
+        let tracks = [];
+        console.log(playlist);
+        tracks = playlist.tracks;
         const self = this;
         return (
             <div className="nmr-track-table-view">
-                <div className="playlist-detail">
-                </div>
+                <PlayListDetail playlist={playlist} />
                 <div className="table-tab">
                     <div className="tab-tracks">
                         歌曲列表
@@ -56,7 +63,7 @@ export default class TrackTable extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {playlist.map((item, i) => {
+                        {tracks.map((item, i) => {
                             let id = item.id;
                             let duration = 0;
                             if (item.lMusic)
@@ -104,6 +111,4 @@ export default class TrackTable extends Component {
             this._selectedId = "";
         }
     }
-
-
 }
