@@ -27,3 +27,6 @@ A website application by react
 ### dev and production mode
  - dev: npm run dev
  - production: npm run build
+
+## Capture
+    ![Image of MyCloudMusic](https://raw.githubusercontent.com/maybeShuo/netease-music-react/master/Capture.png)
