@@ -50,7 +50,12 @@ export default class PlayList extends Component {
             <ul className="nmr-play-list-view">
             {playlists.map((item, i) => {
                 let id = item.id;
-                return <li onClick={() => this.onSelectionChange(id)} ref={item.id} key={item.id}>{item.name}</li>
+                return (<li onClick={() => this.onSelectionChange(id)}
+                           ref={item.id}
+                           key={item.id}>
+                           <span className="icon iconfont icon-playlist"></span>
+                           <span className="text">{item.name}</span>
+                        </li>);
             })}
             </ul>
         );
@@ -63,10 +68,8 @@ export default class PlayList extends Component {
 
     shouldComponentUpdate(nextProps, nextState)
     {
-        // console.log(nextProps, this.props, nextState, this.state);
         if (nextState.playLists === this.state.playLists)
         {
-            // console.log("false");
             return false;
         }
         return true;
