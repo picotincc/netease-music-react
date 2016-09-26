@@ -39,7 +39,7 @@ export default class PlayListDetail extends Component {
                             <div className="nickname">{playlist.creator.nickname}</div>
                             <div className="create-time">{this._formatTime(playlist.createTime)}</div>
                         </div>
-                        <div className="tag-bar"><b>标签：</b></div>
+                        <div className="tag-bar"><b>标签：</b>{playlist.tags.join(",")}</div>
                         <div className="intro"><b>简介：</b>{playlist.description}</div>
                     </div>
                 </div>
