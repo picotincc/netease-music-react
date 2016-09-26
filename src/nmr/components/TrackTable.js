@@ -93,7 +93,7 @@ export default class TrackTable extends Component {
     onSelectionChange(id)
     {
         this.selectedId = id;
-        const selectedSong = this.props.playlist.find((item) => {
+        const selectedSong = this.props.playlist.tracks.find((item) => {
             return item.id === id ? true : false;
         });
         this.props.handleClick(selectedSong);

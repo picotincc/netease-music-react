@@ -26,7 +26,7 @@ export default class PlayListDetail extends Component {
                             <span className="logo">歌单</span>
                             <span className="title">{playlist.name}</span>
                             <div className="icon-track-count">
-                                <span className="icon iconfont icon-netease"></span>
+                                <span className="icon iconfont icon-music"></span>
                                 <span className="text">{playlist.trackCount}</span>
                             </div>
                             <div className="icon-play-count">
