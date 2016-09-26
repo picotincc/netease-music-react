@@ -24,7 +24,7 @@ export default class App extends Component {
     }
 
     state = {
-        selectedPlayList: [],
+        selectedPlayList: null,
         selectedSong: null
     }
 
@@ -60,7 +60,7 @@ export default class App extends Component {
         if(id && id !== "")
         {
             ServiceClient.getInstance().getPlayListDetail(id).then(playlist => {
-                this.setState({ selectedPlayList: playlist.tracks });
+                this.setState({ selectedPlayList: playlist });
             });
         }
     }
