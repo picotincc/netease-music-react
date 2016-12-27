@@ -1,6 +1,6 @@
 const NM_API_URL = "/api";
 
-export default class ServiceClient
+export default class ServiceClientP
 {
     static _instance = null;
 
@@ -11,11 +11,11 @@ export default class ServiceClient
 
     static getInstance()
     {
-        if(ServiceClient._instance === null)
+        if(ServiceClientP._instance === null)
         {
-            ServiceClient._instance = new ServiceClient();
+            ServiceClientP._instance = new ServiceClientP();
         }
-        return ServiceClient._instance;
+        return ServiceClientP._instance;
     }
 
     get userId()
@@ -34,6 +34,18 @@ export default class ServiceClient
     {
         // this._userId = "78843035";
         this._userId = "260616759";
+    }
+
+    getData(url, paras)
+    {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${NM_API_URL}` + url,
+                data: paras
+            }).always(res => {
+                resolve(res);
+            });
+        });
     }
 
     getUserPlayLists(uid = this.userId)

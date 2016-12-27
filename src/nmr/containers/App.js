@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ServiceClientP from "../service/ServiceClientP";
 
 import PlayList from "../components/PlayList";
-import ServiceClient from "../service/ServiceClientP";
 import TrackTable from "../components/TrackTable";
 import { login, loadUserPlayLists, activeSelectedPlayList } from '../actions/actions';
 
@@ -12,6 +12,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         console.log("App is running");
+        console.log(ServiceClientP.getUserPlayLists);
 
         this._login();
         this._loadUserPlayLists();
@@ -45,7 +46,7 @@ class App extends Component {
                         />
                     </aside>
                     <section className="content">
-                        <TrackTable playlist={selectedPlayList} />
+                        {/* <TrackTable playlist={selectedPlayList} /> */}
                     </section>
                 </main>
                 <footer></footer>
@@ -67,16 +68,16 @@ class App extends Component {
 
     _loadUserPlayLists()
     {
+        const userId = "78843035";
         const dispatch = this.props.dispatch;
-        dispatch(loadUserPlayLists());
+        dispatch(loadUserPlayLists(userId));
     }
 }
 
 function mapStateToProps(state) {
   return {
       userId: state.userId,
-      userPlayLists: state.playlists,
-      selectedPlayList: state.playlist
+      userPlayLists: state.playlists
   };
 }
 

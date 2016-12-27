@@ -23,6 +23,8 @@ module.exports = {
         extensions: [ "", ".js", ".less" ]
     },
 
+    devtool: 'cheap-module-source-map',
+
     module: {
         loaders: [
             {
