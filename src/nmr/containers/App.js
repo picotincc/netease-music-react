@@ -6,6 +6,8 @@ import PlayList from "../components/PlayList";
 import TrackTable from "../components/TrackTable";
 import { login } from '../actions/UserAction';
 import { loadUserPlayLists, activeSelectedPlayList } from '../actions/PlayListAction';
+import { activeSelectedSong } from '../actions/SongAction';
+
 
 
 class App extends Component {
@@ -13,7 +15,6 @@ class App extends Component {
     constructor(props) {
         super(props);
         console.log("App is running");
-
     }
 
     componentDidMount()
@@ -25,7 +26,7 @@ class App extends Component {
     }
 
     render() {
-        const {dispatch, userPlayLists, selectedPlayList} = this.props;
+        const {dispatch, userPlayLists, selectedPlayList, selectedSong} = this.props;
         return (
           <div className="nmr-app">
                 <header>
@@ -40,10 +41,13 @@ class App extends Component {
                         />
                     </aside>
                     <section className="content">
-                        <TrackTable playlist={selectedPlayList} />
+                        <TrackTable
+                            playlist={selectedPlayList}
+                            onSongClick={song => dispatch(activeSelectedSong(song))}
+                        />
                     </section>
                 </main>
-                <footer></footer>
+                <footer>{selectedSong ? selectedSong.name : ""}</footer>
           </div>
         )
     }
@@ -54,7 +58,8 @@ function mapStateToProps(state) {
   return {
       userId: state.userId,
       userPlayLists: state.playlists,
-      selectedPlayList: state.selectedPlayList
+      selectedPlayList: state.selectedPlayList,
+      selectedSong: state.selectedSong
   };
 }
 

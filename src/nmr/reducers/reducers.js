@@ -25,13 +25,24 @@ function activeUserPlayLists(state = [], action)
     }
 }
 
-function activeSelectedPlayList(state = null, action)
+function activeSelectedPlayList(state = [], action)
 {
     switch (action.type) {
         case ActionType.REQUEST_PALYLIST_DETAIL:
             return state;
         case ActionType.RECEIVE_PALYLIST_DETAIL:
-          let nextState = action.response;
+          let nextState = action.response.tracks;
+          return nextState;
+        default:
+          return state
+    }
+}
+
+function activeSelectedSong(state = null, action)
+{
+    switch (action.type) {
+        case ActionType.ACTIVE_SONG:
+          let nextState = action.song;
           return nextState;
         default:
           return state
@@ -41,7 +52,8 @@ function activeSelectedPlayList(state = null, action)
 const rootReducer = combineReducers({
     userId: login,
     playlists: activeUserPlayLists,
-    selectedPlayList: activeSelectedPlayList
+    selectedPlayList: activeSelectedPlayList,
+    selectedSong: activeSelectedSong
 });
 
 export default rootReducer;
