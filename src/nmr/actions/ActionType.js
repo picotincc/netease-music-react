@@ -1,0 +1,16 @@
+/*
+ * 用户登录
+ */
+export const USER_LOGIN = 'USER_LOGIN';
+
+
+
+
+/*
+ * 异步请求action 类型
+ */
+export const REQUEST_PALYLISTS_DATA = 'REQUEST_PALYLISTS_DATA';
+export const RECEIVE_PALYLISTS_DATA = 'RECEIVE_PALYLISTS_DATA';
+
+export const REQUEST_PALYLIST_DETAIL = 'REQUEST_PALYLIST_DETAIL';
+export const RECEIVE_PALYLIST_DETAIL = 'RECEIVE_PALYLIST_DETAIL';

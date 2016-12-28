@@ -4,7 +4,8 @@ import ServiceClientP from "../service/ServiceClientP";
 
 import PlayList from "../components/PlayList";
 import TrackTable from "../components/TrackTable";
-import { login, loadUserPlayLists, activeSelectedPlayList } from '../actions/actions';
+import { login } from '../actions/UserAction';
+import { loadUserPlayLists, activeSelectedPlayList } from '../actions/PlayListAction';
 
 
 class App extends Component {
@@ -12,22 +13,15 @@ class App extends Component {
     constructor(props) {
         super(props);
         console.log("App is running");
-        console.log(ServiceClientP.getUserPlayLists);
 
-        this._login();
-        this._loadUserPlayLists();
     }
 
-    static defaultProps = {
-        userId: "",
-        userPlayLists: [],
-        selectedPlayList: []
-    }
-
-    static propTypes = {
-        userId: React.PropTypes.string.isRequired,
-        userPlayLists: React.PropTypes.array,
-        selectedPlayList: React.PropTypes.array
+    componentDidMount()
+    {
+        const userId = "78843035";
+        const dispatch = this.props.dispatch;
+        dispatch(login(userId));
+        dispatch(loadUserPlayLists(userId));
     }
 
     render() {
@@ -42,11 +36,11 @@ class App extends Component {
                     <aside className="sidebar">
                         <PlayList
                             playlists={userPlayLists}
-                            handleClick={playlistId => dispatch(activeSelectedPlayList(playlistId))}
+                            onPlayListClick={playlistId => dispatch(activeSelectedPlayList(playlistId))}
                         />
                     </aside>
                     <section className="content">
-                        {/* <TrackTable playlist={selectedPlayList} /> */}
+                        <TrackTable playlist={selectedPlayList} />
                     </section>
                 </main>
                 <footer></footer>
@@ -54,30 +48,13 @@ class App extends Component {
         )
     }
 
-    componentDidMount()
-    {
-
-    }
-
-    _login()
-    {
-        const userId = "78843035";
-        const dispatch = this.props.dispatch;
-        dispatch(login(userId));
-    }
-
-    _loadUserPlayLists()
-    {
-        const userId = "78843035";
-        const dispatch = this.props.dispatch;
-        dispatch(loadUserPlayLists(userId));
-    }
 }
 
 function mapStateToProps(state) {
   return {
       userId: state.userId,
-      userPlayLists: state.playlists
+      userPlayLists: state.playlists,
+      selectedPlayList: state.selectedPlayList
   };
 }
 

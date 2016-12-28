@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import { ACTIVE_USER_PLAYLISTS, ACTIVE_SELECTED_PlAYLIST, GET_DATA, RECEIVE_DATA } from '../actions/actions';
+import * as ActionType from "../actions/ActionType";
 
 
 function login(state = "", action)
 {
     switch (action.type) {
-        case "login":
+        case ActionType.USER_LOGIN:
             return action.userId;
         default:
             return state;
@@ -15,19 +15,33 @@ function login(state = "", action)
 function activeUserPlayLists(state = [], action)
 {
     switch (action.type) {
-      case GET_DATA:
+      case ActionType.REQUEST_PALYLISTS_DATA:
         return state;
-      case RECEIVE_DATA:
-        let nextState = action.playlists;
+      case ActionType.RECEIVE_PALYLISTS_DATA:
+        let nextState = action.response;
         return nextState;
       default:
         return state
     }
 }
 
+function activeSelectedPlayList(state = null, action)
+{
+    switch (action.type) {
+        case ActionType.REQUEST_PALYLIST_DETAIL:
+            return state;
+        case ActionType.RECEIVE_PALYLIST_DETAIL:
+          let nextState = action.response;
+          return nextState;
+        default:
+          return state
+    }
+}
+
 const rootReducer = combineReducers({
     userId: login,
-    playlists: activeUserPlayLists
+    playlists: activeUserPlayLists,
+    selectedPlayList: activeSelectedPlayList
 });
 
 export default rootReducer;

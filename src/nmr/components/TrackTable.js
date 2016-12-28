@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import ServiceClient from "../service/ServiceClient";
 import TimeUtil from "../util/TimeUtil";
 
 export default class TrackTable extends Component {
@@ -9,13 +8,15 @@ export default class TrackTable extends Component {
         super(props);
     }
 
-    static defaultProps = {
-        playlist: []
+
+    componentDidMount()
+    {
+
     }
 
     render()
     {
-        const playlist = this.props.playlist;
+        const playlist = this.props.playlist ? this.props.playlist.tracks : [];
         const self = this;
         return (
             <table className="nmr-track-table-view">
@@ -54,10 +55,6 @@ export default class TrackTable extends Component {
         );
     }
 
-    componentDidMount()
-    {
-
-    }
 
 
 }

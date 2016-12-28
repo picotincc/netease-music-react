@@ -1,38 +1,50 @@
 import React, { Component } from 'react';
 
-import ServiceClient from "../service/ServiceClientP";
-
 export default class PlayList extends Component {
 
     constructor (props) {
         super(props);
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    static defaultProps = {
-        playlists: []
+    state = {
+        selectedId: null
     }
 
-    static propTypes = {
-        playlists: React.PropTypes.array.isRequired
+    componentWillReceiveProps(nextProps)
+    {
+        if (this.state.selectedId === null && nextProps.playlists.length > 0)
+        {
+            nextProps.onPlayListClick(nextProps.playlists[0].id);
+            this.setState({
+                selectedId: nextProps.playlists[0].id
+            });
+        }
     }
 
     render()
     {
         const playlists = this.props.playlists;
-        const self = this;
+        const selectedId = this.state.selectedId;
         return (
             <ul className="nmr-play-list-view">
             {playlists.map((item, i) => {
-                let id = item.id;
-                return <li ref={item.id} key={item.id}>{item.name}</li>
+                let selectedClass = (item.id === selectedId) ? "selected" : "";
+                return <li onClick={() => this.handleClick(item.id)} className={selectedClass} ref={item.id} key={item.id}>{item.name}</li>
             })}
             </ul>
         );
     }
 
-    componentDidMount()
+    handleClick(id)
     {
-
+        if (id !== this.state.selectedId)
+        {
+            this.setState({
+                selectedId: id
+            });
+            this.props.onPlayListClick(id);
+        }
     }
 
 }
