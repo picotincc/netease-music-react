@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ServiceClientP from "../service/ServiceClientP";
 
 import PlayList from "../components/PlayList";
+import SearchBar from "../components/SearchBar";
 import TrackTable from "../components/TrackTable";
 import { login } from '../actions/UserAction';
 import { loadUserPlayLists, activeSelectedPlayList } from '../actions/PlayListAction';
@@ -32,6 +32,9 @@ class App extends Component {
                 <header>
                     <div className="logo"></div>
                     <h1>网易云音乐</h1>
+                    <div className="search-section">
+                        <SearchBar />
+                    </div>                
                 </header>
                 <main>
                     <aside className="sidebar">

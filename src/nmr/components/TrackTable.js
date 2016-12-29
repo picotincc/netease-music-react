@@ -18,10 +18,10 @@ export default class TrackTable extends Component {
     {
         if (this.state.selectedId === null && nextProps.playlist.length > 0)
         {
-            nextProps.onSongClick(nextProps.playlist[0]);
             this.setState({
                 selectedId: nextProps.playlist[0].id
             });
+            nextProps.onSongClick(nextProps.playlist[0]);
         }
     }
 
