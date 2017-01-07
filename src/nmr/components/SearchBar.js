@@ -11,6 +11,10 @@ class SearchBar extends Component {
         super(props);
     }
 
+    state = {
+        searchInput: ""
+    }
+
     componentDidMount()
     {
 
