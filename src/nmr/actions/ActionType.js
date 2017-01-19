@@ -22,3 +22,9 @@ export const RECEIVE_PALYLIST_DETAIL = 'RECEIVE_PALYLIST_DETAIL';
  * 选择歌曲
  */
 export const ACTIVE_SONG = 'ACTIVE_SONG';
+
+/*
+ * 异步请求action: 搜索
+ */
+export const REQUEST_SEARCH_DATA = 'REQUEST_SEARCH_DATA';
+export const RECEIVE_SEARCH_DATA = 'RECEIVE_SEARCH_DATA';

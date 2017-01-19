@@ -5,7 +5,7 @@ import PlayList from "../components/PlayList";
 import SearchBar from "../components/SearchBar";
 import TrackTable from "../components/TrackTable";
 import { login } from '../actions/UserAction';
-import { loadUserPlayLists, activeSelectedPlayList } from '../actions/PlayListAction';
+import { loadUserPlayLists, activeSelectedPlayList, search } from '../actions/PlayListAction';
 import { activeSelectedSong } from '../actions/SongAction';
 
 
@@ -33,8 +33,8 @@ class App extends Component {
                     <div className="logo"></div>
                     <h1>网易云音乐</h1>
                     <div className="search-section">
-                        <SearchBar />
-                    </div>                
+                        <SearchBar onSearch={keyword => dispatch(search(keyword))}/>
+                    </div>
                 </header>
                 <main>
                     <aside className="sidebar">

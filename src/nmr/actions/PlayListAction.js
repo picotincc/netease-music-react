@@ -3,7 +3,9 @@ import {
     REQUEST_PALYLISTS_DATA,
     RECEIVE_PALYLISTS_DATA,
     REQUEST_PALYLIST_DETAIL,
-    RECEIVE_PALYLIST_DETAIL
+    RECEIVE_PALYLIST_DETAIL,
+    REQUEST_SEARCH_DATA,
+    RECEIVE_SEARCH_DATA
 } from './ActionType';
 
 
@@ -15,6 +17,11 @@ export function loadUserPlayLists(userId)
 export function activeSelectedPlayList(playlistId)
 {
     return getPlayListDetail(playlistId);
+}
+
+export function search(keyword)
+{
+    return searchSongs(keyword);
 }
 
 
@@ -47,5 +54,13 @@ const getPlayListDetail = (id) => (dispatch) => {
     return ServiceClient.getInstance().getPlayListDetail(id)
             .then(res => {
                 dispatch(receiveData(RECEIVE_PALYLIST_DETAIL, id, res));
+            });
+};
+
+const searchSongs = (keyword) => (dispatch) => {
+    dispatch(requestData(REQUEST_SEARCH_DATA, keyword));
+    return ServiceClient.getInstance().search(keyword)
+            .then(res => {
+                dispatch(receiveData(RECEIVE_SEARCH_DATA, keyword, res));
             });
 };

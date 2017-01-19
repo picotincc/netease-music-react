@@ -31,8 +31,13 @@ function activeSelectedPlayList(state = [], action)
         case ActionType.REQUEST_PALYLIST_DETAIL:
             return state;
         case ActionType.RECEIVE_PALYLIST_DETAIL:
-          let nextState = action.response.tracks;
-          return nextState;
+            let nextState = action.response.tracks;
+            return nextState;
+        case ActionType.REQUEST_SEARCH_DATA:
+            return state;
+        case ActionType.RECEIVE_SEARCH_DATA:
+            let searchData = action.response;
+            return searchData;
         default:
           return state
     }

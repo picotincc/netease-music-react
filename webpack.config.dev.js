@@ -10,7 +10,6 @@ module.exports = {
     entry: {
         vendor: [ "jquery" ],
         nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ],
-        todo: [ "./todo/index.js" ]
     },
 
     output: {
@@ -68,9 +67,9 @@ module.exports = {
                 ignorePath: false,
                 changeOrigin: true,
                 secure: false,
-                // headers: {
-                //     "Referer": "http://music.163.com"
-                // }
+                headers: {
+                    "Referer": "http://music.163.com"
+                }
             }
         }
     }

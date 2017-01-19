@@ -5,50 +5,11 @@
     height: @nmr-search-view-height + 4;
     border-radius: 16px;
 
-    .icon
+    width: 200px;
+
+    > .nmr-autocomplete
     {
-        color: grey;
-        padding-left: 6px;
-    }
-
-    input[type=search]
-    {
-        width: @nmr-search-view-width;
-        padding-top: 4px;
-        padding-left: 6px;
-        background:  transparent;
-        border: none;
-    }
-
-    .nm-suggest-view
-    {
-        position: absolute;
-        background: @body-bg;
-        top: @nmr-search-view-height + 6;
-        left: 0;
-        right: 0;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-        padding-top: 4px;
-        padding-bottom: 4px;
-        padding-left: 8px;
-        padding-right: 8px;
-
-        li
-        {
-            line-height: 1;
-            height: @nmr-list-item-height;
-            padding-left: 20px;
-            padding-right: 12px;
-            padding-top: 8px;
-            padding-bottom: 8px;
-            text-overflow: ellipsis;
-
-            &:hover
-            {
-                background: #efefef;
-            }
-        }
+        width: 100%;
     }
 
 }
