@@ -30,3 +30,7 @@ A website application by react
 
 ## Capture
 ![MyCloudMusic](https://raw.githubusercontent.com/maybeShuo/netease-music-react/master/Capture.PNG)
+
+
+## Demo
+ - http://cszone.cn/apps/netease-music-react/  (需要浏览器跨域)
