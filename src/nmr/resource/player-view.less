@@ -4,6 +4,24 @@
     height: 100%;
     display: flex;
 
+    .ant-slider:hover .ant-slider-handle {
+        border-color: @nmr-app-color;
+    }
+
+    .ant-slider:hover .ant-slider-track {
+        background-color: @nmr-app-color;
+    }
+
+    .ant-slider-track
+    {
+        background-color: @nmr-app-color;
+    }
+
+    .ant-slider-handle
+    {
+        border: solid 2px @nmr-app-color;
+    }
+
     > .player-controls
     {
         flex: 0 0 200px;
@@ -52,14 +70,11 @@
 
         > .play-time
         {
-            color: @text-color;
 
             flex: 1 0 auto;
-            background-color: @nmr-selection-bg;
             padding: 0;
             margin: 12px 8px;
-            align-items: flex-start;
-            border-radius: 8px;
+
 
 
             > .playing-bar
@@ -107,6 +122,7 @@
     {
         flex: 0 0 300px;
         display: flex;
+        align-items: center;
 
         > .icon
         {
@@ -122,31 +138,12 @@
             margin-top: 29px;
             margin-bottom: 29px;
             position: relative;
-            background-color: #ccc;
             border-radius: 6px;
+        }
 
-            > .volume-bar
-            {
-                background-color: #b02101;
-                height: 6px;
-                width: 53px;
-                border-radius: 8px;
-            }
-
-            > .icon
-            {
-                position: absolute;
-                left: 47px;
-                top: 0px;
-                width: 12px;
-                height: 100%;
-                border-radius: 6px;
-                color: #b02101;
-                z-index: 100;
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-            }
+        > .volume-value
+        {
+            margin-left: 10px;
         }
     }
 }

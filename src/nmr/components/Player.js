@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { Slider } from 'antd';
 
-import ServiceClient from "../service/ServiceClient";
 import TimeUtil from "../util/TimeUtil";
 
 
@@ -10,6 +10,8 @@ export default class Player extends Component {
         super(props);
         this._isPlaying = false;
         this.handlePlayerClick = this.handlePlayerClick.bind(this);
+        this.handleTimeChange = this.handleTimeChange.bind(this);
+        this.handleVolumeChange = this.handleVolumeChange.bind(this);
     }
 
     static defaultProps = {
@@ -17,7 +19,14 @@ export default class Player extends Component {
     }
 
     state = {
-
+        min: 0,
+        max: 100,
+        curTime: 0,
+        step: 1,
+        vMin: 0,
+        vMax: 1,
+        vStep: 0.01,
+        curVolume: 50
     }
 
     get isPlaying()
@@ -39,6 +48,7 @@ export default class Player extends Component {
             url = this.props.song.mp3Url;
             duration = TimeUtil.formatPlayTime(this.props.song.duration);
         }
+        const state = this.state;
         return (
 
             <div className="nmr-player">
@@ -48,19 +58,39 @@ export default class Player extends Component {
                     <span ref="next" className="icon iconfont icon-next"></span>
                 </div>
                 <div className="time-bar">
-                    <span ref="curTime" className="current-time">00:00</span>
+                    <span ref="curTime" className="current-time">
+                        {TimeUtil.formatAudioCurTime(state.curTime)}
+                    </span>
+
                     <div className="play-time">
-                        <div ref="playingBar" className="playing-bar"></div>
-                        <div ref="playingIcon" draggable="true" className="playing-icon iconfont icon-circle1"></div>
+                        <Slider
+                            defaultValue={0}
+                            disabled={false}
+                            tipFormatter={null}
+                            min={state.min}
+                            max={state.max}
+                            step={state.step}
+                            value={state.curTime}
+                            onChange={this.handleTimeChange}
+                        />
                     </div>
                     <span className="duration">{duration ? duration : "00:00"}</span>
                 </div>
                 <div className="volume-control">
                     <span className="icon iconfont icon-volume"></span>
                     <div className="volume-section">
-                        <div ref="volumeBar" className="volume-bar"></div>
-                        <div ref="volumeIcon" draggable="true" className="icon iconfont icon-circle"></div>
+                        <Slider
+                            defaultValue={state.curVolume / 100}
+                            disabled={false}
+                            tipFormatter={null}
+                            min={state.vMin}
+                            max={state.vMax}
+                            step={state.vStep}
+                            value={state.curVolume / 100}
+                            onChange={this.handleVolumeChange}
+                        />
                     </div>
+                    <span className="volume-value">{state.curVolume + "%"}</span>
                 </div>
                 <audio
                     ref="audio"
@@ -76,119 +106,42 @@ export default class Player extends Component {
         this.player = this.refs["player"];
         this.audio = this.refs["audio"];
         this.curTime = this.refs["curTime"];
-        this.playingBar = this.refs["playingBar"];
-        this.playingIcon = this.refs["playingIcon"];
-        this.volumeBar = this.refs["volumeBar"];
-        this.volumeIcon = this.refs["volumeIcon"];
-        this.audio.volume = 0.5;
+        this.audio.volume = (this.state.curVolume / 100);
         this.audio.onended = () => {
             this.player.classList.remove("icon-pause");
             this.player.classList.add("icon-play");
             this.isPlaying = false;
-            this.playingBar.style.width = "0px";
-            this.playingIcon.style.left = 320  + "px";
+            this.setState({
+                curTime: 0
+            })
         };
         this.audio.ontimeupdate = () => {
-            this.curTime.innerHTML = TimeUtil.formatAudioCurTime(this.audio.currentTime);
-            let offset = Math.round(714 * Math.round(this.audio.currentTime)/Math.round(this.audio.duration));
-            this.playingBar.style.width = offset + "px";
-            this.playingIcon.style.left = (320 + offset) + "px";
-        };
-        this.playingIcon.ondragstart = (e) => {
-            const x = e.clientX - this.playingIcon.offsetLeft;
-
-            this.playingIcon.ondrag = (e1) => {
-                let left = e1.clientX - x;
-                let width = 0;
-                if (left < 320)
-                {
-                    left = 320;
-                }
-                else if (left > 1034)
-                {
-                    left = 1034;
-                    width = 714;
-                }
-                else
-                {
-                    width = left - 320;
-                }
-                this.playingIcon.style.left = left + "px";
-                this.playingBar.style.width = width + "px";
-            };
-
-            this.playingIcon.ondragend = (e1) => {
-                let left = e1.clientX - x;
-                let width = 0;
-                if (left < 320)
-                {
-                    left = 320;
-                }
-                else if (left > 1034)
-                {
-                    left = 1034;
-                    width = 714;
-                }
-                else
-                {
-                    width = left - 320;
-                }
-                this.playingIcon.style.left = left + "px";
-                this.playingBar.style.width = width + "px";
-
-                const currentTime = (Math.round(this.audio.duration) * width) / 714;
-                this.audio.currentTime = currentTime;
-            };
+            const cur = Math.floor(this.audio.currentTime);
+            if (cur != this.state.curTime)
+            {
+                this.setState({
+                    curTime: cur
+                })
+            }
         };
 
-        this.volumeIcon.ondragstart = (e) => {
-            const x = e.clientX - this.volumeIcon.offsetLeft;
+    }
 
-            this.volumeIcon.ondrag = (e1) => {
-                let left = e1.clientX - x;
-                let width = 0;
-                if (left < 0)
-                {
-                    left = 0;
-                }
-                else if (left > 98)
-                {
-                    left = 98;
-                    width = 105;
-                }
-                else
-                {
-                    width = left + 6;
-                }
-                this.volumeIcon.style.left = left + "px";
-                this.volumeBar.style.width = width + "px";
-                const volume = (width / 100) > 1 ? 1 : (width / 100);
-                this.audio.volume = volume;
-            };
+    handleVolumeChange(value)
+    {
+        const volume = Math.ceil(value * 100);
+        this.audio.volume = value;
+        this.setState({
+            curVolume: volume
+        });
+    }
 
-            this.volumeIcon.ondragend = (e1) => {
-                let left = e1.clientX - x;
-                let width = 0;
-                if (left < 0)
-                {
-                    left = 0;
-                }
-                else if (left > 98)
-                {
-                    left = 98;
-                    width = 105;
-                }
-                else
-                {
-                    width = left + 6;
-                }
-                this.volumeIcon.style.left = left + "px";
-                this.volumeBar.style.width = width + "px";
-
-                const volume = (width / 100) > 1 ? 1 : (width / 100);
-                this.audio.volume = volume;
-            };
-        };
+    handleTimeChange(value)
+    {
+        this.audio.currentTime = value;
+        this.setState({
+            curTime: value
+        });
     }
 
     handlePlayerClick()
@@ -229,6 +182,9 @@ export default class Player extends Component {
                 this.player.classList.remove("icon-play");
                 this.player.classList.add("icon-pause");
                 this.isPlaying = true;
+                this.setState({
+                    max: nextProps.song.duration / 1000
+                })
             }
         }
     }
