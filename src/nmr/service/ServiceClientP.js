@@ -1,4 +1,4 @@
-const NM_API_URL = "/api";
+const NM_API_URL = "http://127.0.0.1:8001/api";
 
 export default class ServiceClient
 {
@@ -39,20 +39,29 @@ export default class ServiceClient
     {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: `${NM_API_URL}/user/playlist/`,
+                url: `${NM_API_URL}/user/playlist`,
                 data: {
                     uid,
                     limit: 1000,
                     offset: 0
                 }
             }).always(res => {
-                if (res.code === 200)
-                {
-                    resolve(res.playlist);
+                let result = null;
+                if (typeof res === "string") {
+                    result = JSON.parse(res);
                 }
                 else
                 {
-                    reject("Response with error code:" + res.code);
+                    result = res;
+                }
+
+                if (result.code === 200)
+                {
+                    resolve(result.playlist);
+                }
+                else
+                {
+                    reject("Response with error code:" + result.code);
                 }
             });
         });
@@ -67,13 +76,23 @@ export default class ServiceClient
                     id
                 }
             }).always(res => {
-                if (res.code === 200 )
-                {
-                    resolve(res.result);
+
+                let result = null;
+                if (typeof res === "string") {
+                    result = JSON.parse(res);
                 }
                 else
                 {
-                    reject("Response with error code:" + res.code);
+                    result = res;
+                }
+
+                if (result.code === 200 )
+                {
+                    resolve(result.result);
+                }
+                else
+                {
+                    reject("Response with error code:" + result.code);
                 }
             });
         });
@@ -83,7 +102,7 @@ export default class ServiceClient
     {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: `${NM_API_URL}/song/detail?ids=[${ids}]`,
+                url: `${NM_API_URL}/song/detail?ids=${ids}`,
                 // data: {
                 //     ids
                 // }
