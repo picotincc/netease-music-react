@@ -1,4 +1,4 @@
-const NM_API_URL = "http://127.0.0.1:8001/api";
+const NM_API_URL = "http://123.207.90.148:8001/api";
 
 export default class ServiceClient
 {
