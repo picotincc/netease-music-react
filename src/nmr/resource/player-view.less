@@ -1,0 +1,149 @@
+.nmr-player
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    .ant-slider:hover .ant-slider-handle {
+        border-color: @nmr-app-color;
+    }
+
+    .ant-slider:hover .ant-slider-track {
+        background-color: @nmr-app-color;
+    }
+
+    .ant-slider-track
+    {
+        background-color: @nmr-app-color;
+    }
+
+    .ant-slider-handle
+    {
+        border: solid 2px @nmr-app-color;
+    }
+
+    > .player-controls
+    {
+        flex: 0 0 200px;
+        display: flex;
+        padding: 16px 16px;
+
+        .icon
+        {
+            flex: 1 0 auto;
+            font-size: 28px;
+            cursor: pointer;
+            color: @nmr-app-color;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+    }
+
+    > .time-bar
+    {
+        flex: 4 0 auto;
+        display: flex;
+        padding: 16px 16px;
+        justify-content: center;
+
+        // span, div
+        // {
+        //     display: flex;
+        //     flex-direction: column;
+        //     justify-content: center;
+        //     align-items: center;
+        //     padding: 6px 6px;
+        //     color: @text-color;
+        // }
+
+        > .current-time
+        {
+            flex: 0 0 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6px 6px;
+            color: @text-color;
+        }
+
+        > .play-time
+        {
+
+            flex: 1 0 auto;
+            padding: 0;
+            margin: 12px 8px;
+
+
+
+            > .playing-bar
+            {
+                position: relative;
+                height: 100%;
+                width: 2px;
+                background-color: @nmr-app-color;
+                transition: width 0.7s ease;
+                border-radius: 8px;
+            }
+
+            > .playing-icon
+            {
+                position: absolute;
+                color: @nmr-app-color;
+                width: 16px;
+                height: 16px;
+                z-index: 100;
+                left: 320px;
+                top: 24px;
+                background: white;
+                border-radius: 16px;
+                display: flex;
+                align-items: center;
+                transition: left 0.7s ease;
+                cursor: pointer;
+            }
+        }
+
+        > .duration
+        {
+            flex: 0 0 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6px 6px;
+            color: @text-color;
+        }
+
+    }
+
+    > .volume-control
+    {
+        flex: 0 0 300px;
+        display: flex;
+        align-items: center;
+
+        > .icon
+        {
+            display: flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        > .volume-section
+        {
+            flex: 0 0 105px;
+            margin-left: 8px;
+            margin-top: 29px;
+            margin-bottom: 29px;
+            position: relative;
+            border-radius: 6px;
+        }
+
+        > .volume-value
+        {
+            margin-left: 10px;
+        }
+    }
+}
