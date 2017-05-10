@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PlayList from "../components/PlayList";
 import SearchBar from "../components/SearchBar";
 import TrackTable from "../components/TrackTable";
+import Player from "../components/Player";
 import { login } from '../actions/UserAction';
 import { loadUserPlayLists, activeSelectedPlayList, search } from '../actions/PlayListAction';
 import { activeSelectedSong } from '../actions/SongAction';
@@ -17,12 +18,16 @@ class App extends Component {
         console.log("App is running");
     }
 
-    componentDidMount()
+    async componentDidMount()
     {
         const userId = "78843035";
         const dispatch = this.props.dispatch;
         dispatch(login(userId));
-        dispatch(loadUserPlayLists(userId));
+        try {
+            await dispatch(loadUserPlayLists(userId));
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     render() {
@@ -50,7 +55,9 @@ class App extends Component {
                         />
                     </section>
                 </main>
-                <footer>{selectedSong ? selectedSong.name : ""}</footer>
+                <footer>
+                    <Player song={selectedSong}/>
+                </footer>
           </div>
         )
     }

@@ -39,6 +39,91 @@ export default class Player extends Component {
         this._isPlaying = value;
     }
 
+    componentDidMount()
+    {
+        this.player = this.refs["player"];
+        this.audio = this.refs["audio"];
+        this.curTime = this.refs["curTime"];
+        this.audio.volume = (this.state.curVolume / 100);
+        this.audio.onended = () => {
+            this.player.classList.remove("icon-pause");
+            this.player.classList.add("icon-play");
+            this.isPlaying = false;
+            this.setState({
+                curTime: 0
+            })
+        };
+        this.audio.ontimeupdate = () => {
+            const cur = Math.floor(this.audio.currentTime);
+            if (cur != this.state.curTime)
+            {
+                this.setState({
+                    curTime: cur
+                })
+            }
+        };
+    }
+
+    componentWillReceiveProps(nextProps)
+    {
+        if (nextProps.song)
+        {
+            if (nextProps.song.mp3Url)
+            {
+                this.player.classList.remove("icon-play");
+                this.player.classList.add("icon-pause");
+                this.isPlaying = true;
+                this.setState({
+                    max: nextProps.song.duration / 1000
+                })
+            }
+        }
+    }
+
+    handleVolumeChange(value)
+    {
+        const volume = Math.ceil(value * 100);
+        this.audio.volume = value;
+        this.setState({
+            curVolume: volume
+        });
+    }
+
+    handleTimeChange(value)
+    {
+        this.audio.currentTime = value;
+        this.setState({
+            curTime: value
+        });
+    }
+
+    handlePlayerClick()
+    {
+        if (this.props.song)
+        {
+            this.toggleIsPlaying();
+        }
+    }
+
+    toggleIsPlaying()
+    {
+        if (this.isPlaying === false)
+        {
+            this.player.classList.remove("icon-play");
+            this.player.classList.add("icon-pause");
+            this.audio.play();
+            this.isPlaying = true;
+        }
+        else
+        {
+            this.player.classList.remove("icon-pause");
+            this.player.classList.add("icon-play");
+            this.audio.pause();
+            this.isPlaying = false;
+        }
+    }
+
+
     render()
     {
         let url = "";
@@ -50,7 +135,6 @@ export default class Player extends Component {
         }
         const state = this.state;
         return (
-
             <div className="nmr-player">
                 <div className="player-controls">
                     <span ref="previous" className="icon iconfont icon-previous"></span>
@@ -100,96 +184,4 @@ export default class Player extends Component {
             </div>
         );
     }
-
-    componentDidMount()
-    {
-        this.player = this.refs["player"];
-        this.audio = this.refs["audio"];
-        this.curTime = this.refs["curTime"];
-        this.audio.volume = (this.state.curVolume / 100);
-        this.audio.onended = () => {
-            this.player.classList.remove("icon-pause");
-            this.player.classList.add("icon-play");
-            this.isPlaying = false;
-            this.setState({
-                curTime: 0
-            })
-        };
-        this.audio.ontimeupdate = () => {
-            const cur = Math.floor(this.audio.currentTime);
-            if (cur != this.state.curTime)
-            {
-                this.setState({
-                    curTime: cur
-                })
-            }
-        };
-
-    }
-
-    handleVolumeChange(value)
-    {
-        const volume = Math.ceil(value * 100);
-        this.audio.volume = value;
-        this.setState({
-            curVolume: volume
-        });
-    }
-
-    handleTimeChange(value)
-    {
-        this.audio.currentTime = value;
-        this.setState({
-            curTime: value
-        });
-    }
-
-    handlePlayerClick()
-    {
-        if (this.props.song)
-        {
-            this.toggleIsPlaying();
-        }
-    }
-
-    toggleIsPlaying()
-    {
-        if (this.isPlaying === false)
-        {
-            this.player.classList.remove("icon-play");
-            this.player.classList.add("icon-pause");
-            this.audio.play();
-            this.isPlaying = true;
-        }
-        else
-        {
-            this.player.classList.remove("icon-pause");
-            this.player.classList.add("icon-play");
-            this.audio.pause();
-            this.isPlaying = false;
-        }
-    }
-
-
-
-
-    componentWillReceiveProps(nextProps)
-    {
-        if (nextProps.song)
-        {
-            if (nextProps.song.mp3Url)
-            {
-                this.player.classList.remove("icon-play");
-                this.player.classList.add("icon-pause");
-                this.isPlaying = true;
-                this.setState({
-                    max: nextProps.song.duration / 1000
-                })
-            }
-        }
-    }
-
-
-
-
 }

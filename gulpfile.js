@@ -34,11 +34,11 @@ gulp.task("dev", [ "clean" ], cb => {
         hot: true,
         historyApiFallback: true,
         stats: { colors: true }
-    }).listen(8080, "localhost", err => {
+    }).listen(3000, "localhost", err => {
         if (err) {
             throw new gutil.PluginError("webpack-dev-server", err);
         }
-        const uri = "http://localhost:8080";
+        const uri = "http://localhost:3000";
         gutil.log("[webpack-dev-server]", uri);
         gulp.src("").pipe(open({ uri }));
     });

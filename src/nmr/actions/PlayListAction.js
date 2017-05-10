@@ -1,4 +1,5 @@
-import ServiceClient from "../service/ServiceClientP";
+import ServiceClient from "../service/ServiceClient";
+
 import {
     REQUEST_PALYLISTS_DATA,
     RECEIVE_PALYLISTS_DATA,
@@ -11,56 +12,43 @@ import {
 
 export function loadUserPlayLists(userId)
 {
-    return getUserPlayLists(userId);
+    return async(dispatch) => {
+        dispatch(requestData(REQUEST_PALYLISTS_DATA, userId));
+        const res = await ServiceClient.getInstance().getUserPlayLists(userId);
+        dispatch(receiveData(RECEIVE_PALYLISTS_DATA, userId, res));
+        return res;
+    }
 }
 
 export function activeSelectedPlayList(playlistId)
 {
-    return getPlayListDetail(playlistId);
+    return async(dispatch) => {
+        dispatch(requestData(REQUEST_PALYLIST_DETAIL, playlistId));
+        const res = await ServiceClient.getInstance().getPlayListDetail(playlistId);
+        dispatch(receiveData(RECEIVE_PALYLIST_DETAIL, playlistId, res));
+        return res;
+    }
 }
 
 export function search(keyword)
 {
-    return searchSongs(keyword);
+    return async(dispatch) => {
+        dispatch(requestData(REQUEST_SEARCH_DATA, keyword));
+        const res = await ServiceClient.getInstance().searchSongs(keyword);
+        dispatch(receiveData(RECEIVE_SEARCH_DATA, keyword, res));
+        return res;
+    }
 }
 
 
-export const requestData = (type, data) => ({
+const requestData = (type, data) => ({
     type: type,
     data
 });
 
-export const receiveData = (type, data, res) => ({
+const receiveData = (type, data, res) => ({
     type: type,
     data,
     response: res,
     receivedAt: Date.now()
 });
-
-
-/*
- * request异步请求
- */
-const getUserPlayLists = uid => (dispatch) => {
-    dispatch(requestData(REQUEST_PALYLISTS_DATA, uid));
-    return ServiceClient.getInstance().getUserPlayLists(uid)
-            .then(res => {
-                dispatch(receiveData(RECEIVE_PALYLISTS_DATA, uid, res));
-            });
-};
-
-const getPlayListDetail = (id) => (dispatch) => {
-    dispatch(requestData(REQUEST_PALYLIST_DETAIL, id));
-    return ServiceClient.getInstance().getPlayListDetail(id)
-            .then(res => {
-                dispatch(receiveData(RECEIVE_PALYLIST_DETAIL, id, res));
-            });
-};
-
-const searchSongs = (keyword) => (dispatch) => {
-    dispatch(requestData(REQUEST_SEARCH_DATA, keyword));
-    return ServiceClient.getInstance().search(keyword)
-            .then(res => {
-                dispatch(receiveData(RECEIVE_SEARCH_DATA, keyword, res));
-            });
-};
