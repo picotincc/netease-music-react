@@ -8,7 +8,7 @@ module.exports = {
     context: path.resolve("./src"),
 
     entry: {
-        vendor: [ "jquery" ],
+        vendor: [ "jquery","perfect-scrollbar" ],
         nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ],
     },
 
@@ -48,7 +48,8 @@ module.exports = {
         new webpack.NoErrorsPlugin(),
 
         new webpack.ProvidePlugin({
-            "$": "jquery"
+            $: "jquery",
+            Ps: "perfect-scrollbar"
         }),
 
         new webpack.optimize.CommonsChunkPlugin({
@@ -63,6 +64,20 @@ module.exports = {
     devServer: {
         proxy: {
             "/api/*": {
+                "target": {
+                  "host": "music.163.com",
+                  "protocol": 'http:',
+                  "port": 80
+                },
+                ignorePath: false,
+                changeOrigin: true,
+                secure: false,
+                headers: {
+                    "Referer": "http://music.163.com"
+                }
+            },
+
+            "/weapi/*": {
                 "target": {
                   "host": "music.163.com",
                   "protocol": 'http:',

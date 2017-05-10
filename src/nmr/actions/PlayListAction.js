@@ -34,7 +34,7 @@ export function search(keyword)
 {
     return async(dispatch) => {
         dispatch(requestData(REQUEST_SEARCH_DATA, keyword));
-        const res = await ServiceClient.getInstance().searchSongs(keyword);
+        const res = await ServiceClient.getInstance().search(keyword);
         dispatch(receiveData(RECEIVE_SEARCH_DATA, keyword, res));
         return res;
     }

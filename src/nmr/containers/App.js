@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import PlayList from "../components/PlayList";
 import SearchBar from "../components/SearchBar";
+import PlayListDetail from "../components/PlayListDetail";
 import TrackTable from "../components/TrackTable";
 import Player from "../components/Player";
 import { login } from '../actions/UserAction';
@@ -32,6 +33,14 @@ class App extends Component {
 
     render() {
         const {dispatch, userPlayLists, selectedPlayList, selectedSong} = this.props;
+        let playlist = [];
+        if (selectedPlayList && selectedPlayList.tracks) {
+            playlist = selectedPlayList.tracks;
+        }
+        if (selectedPlayList && selectedPlayList.songs) {
+            playlist = selectedPlayList.songs;
+        }
+
         return (
           <div className="nmr-app">
                 <header>
@@ -49,8 +58,10 @@ class App extends Component {
                         />
                     </aside>
                     <section className="content">
+                        <PlayListDetail playlist={selectedPlayList} />
+
                         <TrackTable
-                            playlist={selectedPlayList}
+                            playlist={playlist}
                             onSongClick={song => dispatch(activeSelectedSong(song))}
                         />
                     </section>

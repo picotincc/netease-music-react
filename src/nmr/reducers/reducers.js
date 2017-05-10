@@ -25,13 +25,13 @@ function activeUserPlayLists(state = [], action)
     }
 }
 
-function activeSelectedPlayList(state = [], action)
+function activeSelectedPlayList(state = null, action)
 {
     switch (action.type) {
         case ActionType.REQUEST_PALYLIST_DETAIL:
             return state;
         case ActionType.RECEIVE_PALYLIST_DETAIL:
-            let nextState = action.response.tracks;
+            let nextState = action.response;
             return nextState;
         case ActionType.REQUEST_SEARCH_DATA:
             return state;

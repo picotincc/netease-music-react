@@ -16,7 +16,7 @@ export default class TrackTable extends Component {
 
     componentWillReceiveProps(nextProps)
     {
-        if (this.state.selectedId === null && nextProps.playlist.length > 0)
+        if (this.state.selectedId === null && nextProps.playlist !== null && nextProps.playlist.length > 0)
         {
             this.setState({
                 selectedId: nextProps.playlist[0].id
@@ -40,44 +40,58 @@ export default class TrackTable extends Component {
 
     render()
     {
-        const playlist = this.props.playlist ? this.props.playlist : [];
+        const playlist = this.props.playlist;
+        if (playlist === null || playlist.length === 0) {
+            return (
+                <div className="nmr-track-table-view"></div>
+            );
+        }
         const selectedId = this.state.selectedId;
         const self = this;
+
         return (
-            <table className="nmr-track-table-view">
-                <thead>
-                    <tr>
-                        <td className="name">音乐标题</td>
-                        <td className="artists">歌手</td>
-                        <td className="album">专辑</td>
-                        <td className="time">时长</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {playlist.map((item, i) => {
-                        let id = item.id;
-                        let selectedClass = (item.id === selectedId) ? "selected" : "";
-                        let duration = 0;
-                        if (item.lMusic)
-                        {
-                            duration = item.lMusic.playTime;
-                        }
-                        else
-                        {
-                            duration = item.duration;
-                        }
-                        let time = TimeUtil.formatPlayTime(duration);
-                        return (
-                            <tr key={item.id} className={selectedClass} onDoubleClick={() => this.handleClick(item.id)}>
-                                <td>{item.name}</td>
-                                <td>{item.artists.map(artist => artist.name).join(",")}</td>
-                                <td>{item.album.name}</td>
-                                <td>{time}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+            <div className="nmr-track-table-view">
+                <div className="table-tab">
+                    <div className="tab-tracks">
+                        歌曲列表
+                    </div>
+                </div>
+                <table className="track-table">
+                    <thead>
+                        <tr>
+                            <td className="name">音乐标题</td>
+                            <td className="artists">歌手</td>
+                            <td className="album">专辑</td>
+                            <td className="time">时长</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {playlist.map((item, i) => {
+                            let id = item.id;
+                            let selectedClass = (item.id === selectedId) ? "selected" : "";
+                            let duration = 0;
+                            if (item.lMusic)
+                            {
+                                duration = item.lMusic.playTime;
+                            }
+                            else
+                            {
+                                duration = item.duration;
+                            }
+                            let time = TimeUtil.formatPlayTime(duration);
+                            return (
+                                <tr key={item.id} className={selectedClass} onDoubleClick={() => this.handleClick(item.id)}>
+                                    <td>{item.name}</td>
+                                    <td>{item.artists.map(artist => artist.name).join(",")}</td>
+                                    <td>{item.album.name}</td>
+                                    <td>{time}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
+
         );
     }
 

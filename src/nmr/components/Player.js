@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Slider } from 'antd';
 
+import ServiceClient from "../service/ServiceClient";
 import TimeUtil from "../util/TimeUtil";
 
 
@@ -64,7 +65,7 @@ export default class Player extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps)
+    async componentWillReceiveProps(nextProps)
     {
         if (nextProps.song)
         {
@@ -76,6 +77,9 @@ export default class Player extends Component {
                 this.setState({
                     max: nextProps.song.duration / 1000
                 })
+            } else {
+                const detail = await ServiceClient.getInstance().getSongDetail(nextProps.song.id);
+                console.log(detail);
             }
         }
     }
@@ -178,8 +182,7 @@ export default class Player extends Component {
                 </div>
                 <audio
                     ref="audio"
-                    src={url}
-                    autoPlay>
+                    src={url}>
                 </audio>
             </div>
         );

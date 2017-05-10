@@ -116,7 +116,41 @@ export default class ServiceClient
 
         if (res.code === 200 )
         {
-            return res.result.songs;
+            return res.result;
+        }
+        else
+        {
+            throw new Error("Response with error code:" + res.code);
+        }
+    }
+
+    async getSongDetail(id) {
+        let res = null;
+        try {
+            res = await $.ajax({
+                url: `/weapi/v3/song/detail`,
+                method: "post",
+                data: {
+                    id,
+                    c: JSON.stringify([{id: id}]),
+                    ids: '[' + id + ']',
+                    csrf_token: ""
+                }
+            });
+        }
+        catch (e)
+        {
+            throw e;
+        }
+
+        if (res)
+        {
+            res = JSON.parse(res);
+        }
+
+        if (res.code === 200 )
+        {
+            return res.result;
         }
         else
         {
