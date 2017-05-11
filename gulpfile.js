@@ -26,6 +26,7 @@ gulp.task("dist", [ "clean" ], cb => {
 
 gulp.task("dev", [ "clean" ], cb => {
     const config = require("./webpack.config.dev.js");
+    config.entry.nmr.unshift("webpack-dev-server/client?http://localhost:3000", "webpack/hot/dev-server");
     const complier = webpack(config);
 
     new WebpackDevServer(complier, {

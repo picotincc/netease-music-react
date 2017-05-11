@@ -47,12 +47,17 @@
     tr
     {
         height: @nmr-list-item-height;
-        cursor: default;
+        cursor: pointer;
 
         &.selected
         {
             color: @nmr-selection-color;
             background: @nmr-selection-bg;
+        }
+
+        &:hover {
+            color: #111111;
+            background-color: #ebeced;
         }
 
         td

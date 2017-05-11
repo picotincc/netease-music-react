@@ -163,6 +163,7 @@ export default class Player extends Component {
         const state = this.state;
         return (
             <div className="nmr-player">
+                <div className="popup">popup</div>
                 <div className="player-controls">
                     <span ref="previous" className="icon iconfont icon-previous" onClick={() => this.props.onSongSwitch("prev")}></span>
                     <span ref="player" className={"icon iconfont " + (state.isPlaying === true ? "icon-pause" : "icon-play")} onClick={this.handlePlayerClick}></span>
