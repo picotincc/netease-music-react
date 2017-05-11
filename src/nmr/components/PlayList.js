@@ -30,7 +30,9 @@ export default class PlayList extends Component {
             <ul className="nmr-play-list-view">
             {playlists.map((item, i) => {
                 let selectedClass = (item.id === selectedId) ? "selected" : "";
-                return <li onClick={() => this.handleClick(item.id)} className={selectedClass} ref={item.id} key={item.id}>{item.name}</li>
+                return <li onClick={() => this.handleClick(item.id)} className={selectedClass} ref={item.id} key={item.id}>
+                    <span className="icon iconfont icon-playlist"></span>{item.name}
+                </li>
             })}
             </ul>
         );

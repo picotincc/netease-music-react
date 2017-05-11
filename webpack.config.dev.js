@@ -75,20 +75,6 @@ module.exports = {
                 headers: {
                     "Referer": "http://music.163.com"
                 }
-            },
-
-            "/weapi/*": {
-                "target": {
-                  "host": "music.163.com",
-                  "protocol": 'http:',
-                  "port": 80
-                },
-                ignorePath: false,
-                changeOrigin: true,
-                secure: false,
-                headers: {
-                    "Referer": "http://music.163.com"
-                }
             }
         }
     }

@@ -68,10 +68,7 @@ class SearchBar extends Component {
     handleSelect(value)
     {
         if (value.trim() !== "") {
-            console.log(this.state.dataSource);
-            console.log(value);
             const song = this.state.dataSource.find(item => item.value == value);
-            console.log(song);
             this.props.onSearch(song.text);
         }
     }

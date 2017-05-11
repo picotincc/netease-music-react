@@ -1,4 +1,4 @@
-const NM_API_URL = "/api";
+const NM_API_URL = "http://localhost:4000";
 
 export default class ServiceClient
 {
@@ -80,7 +80,33 @@ export default class ServiceClient
 
         if (res.code === 200 )
         {
-            return res.result;
+            return res.playlist;
+        }
+        else
+        {
+            throw new Error("Response with error code:" + res.code);
+        }
+    }
+
+    async getMusicUrl(id)
+    {
+        let res = null;
+        try {
+            res = await $.ajax({
+                url: `${NM_API_URL}/music/url`,
+                data: {
+                    id
+                }
+            });
+        }
+        catch (e)
+        {
+            throw e;
+        }
+
+        if (res.code === 200 )
+        {
+            return res.data[0];
         }
         else
         {
@@ -93,10 +119,10 @@ export default class ServiceClient
         let res = null;
         try {
             res = await $.ajax({
-                url: suggest ? `${NM_API_URL}/search/suggest/web` : `${NM_API_URL}/search/get/`,
-                method: "post",
+                url: suggest ? `${NM_API_URL}/search/suggest` : `${NM_API_URL}/search`,
+                method: "GET",
                 data: {
-                    s: keyword,
+                    keywords: keyword,
                     type: 1,
                     offset: 0,
                     limit: 100,
@@ -107,11 +133,6 @@ export default class ServiceClient
         catch (e)
         {
             throw e;
-        }
-
-        if (res)
-        {
-            res = JSON.parse(res);
         }
 
         if (res.code === 200 )
@@ -128,7 +149,7 @@ export default class ServiceClient
         let res = null;
         try {
             res = await $.ajax({
-                url: `/weapi/v3/song/detail`,
+                url: `http://music.163.com/weapi/v3/song/detail`,
                 method: "post",
                 data: {
                     id,

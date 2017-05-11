@@ -69,21 +69,14 @@ export default class TrackTable extends Component {
                         {playlist.map((item, i) => {
                             let id = item.id;
                             let selectedClass = (item.id === selectedId) ? "selected" : "";
-                            let duration = 0;
-                            if (item.lMusic)
-                            {
-                                duration = item.lMusic.playTime;
-                            }
-                            else
-                            {
-                                duration = item.duration;
-                            }
-                            let time = TimeUtil.formatPlayTime(duration);
+                            let time = TimeUtil.formatPlayTime(item.lMusic ? item.lMusic.playtime : item.dt);
+                            let artists = item.ar || item.artists;
+                            let album = item.al || item.album;
                             return (
                                 <tr key={item.id} className={selectedClass} onDoubleClick={() => this.handleClick(item.id)}>
                                     <td>{item.name}</td>
-                                    <td>{item.artists.map(artist => artist.name).join(",")}</td>
-                                    <td>{item.album.name}</td>
+                                    <td>{artists.map(artist => artist.name).join(",")}</td>
+                                    <td>{album.name}</td>
                                     <td>{time}</td>
                                 </tr>
                             );

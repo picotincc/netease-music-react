@@ -9,7 +9,6 @@ export default class Player extends Component {
 
     constructor (props) {
         super(props);
-        this._isPlaying = false;
         this.handlePlayerClick = this.handlePlayerClick.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleVolumeChange = this.handleVolumeChange.bind(this);
@@ -27,17 +26,9 @@ export default class Player extends Component {
         vMin: 0,
         vMax: 1,
         vStep: 0.01,
-        curVolume: 50
-    }
-
-    get isPlaying()
-    {
-        return this._isPlaying;
-    }
-
-    set isPlaying(value)
-    {
-        this._isPlaying = value;
+        curVolume: 50,
+        url: "",
+        isPlaying: false
     }
 
     componentDidMount()
@@ -47,11 +38,9 @@ export default class Player extends Component {
         this.curTime = this.refs["curTime"];
         this.audio.volume = (this.state.curVolume / 100);
         this.audio.onended = () => {
-            this.player.classList.remove("icon-pause");
-            this.player.classList.add("icon-play");
-            this.isPlaying = false;
             this.setState({
-                curTime: 0
+                curTime: 0,
+                isPlaying: false
             })
         };
         this.audio.ontimeupdate = () => {
@@ -69,18 +58,12 @@ export default class Player extends Component {
     {
         if (nextProps.song)
         {
-            if (nextProps.song.mp3Url)
-            {
-                this.player.classList.remove("icon-play");
-                this.player.classList.add("icon-pause");
-                this.isPlaying = true;
-                this.setState({
-                    max: nextProps.song.duration / 1000
-                })
-            } else {
-                const detail = await ServiceClient.getInstance().getSongDetail(nextProps.song.id);
-                console.log(detail);
-            }
+            const detail = await ServiceClient.getInstance().getMusicUrl(nextProps.song.id);
+            this.setState({
+                isPlaying: true,
+                url: detail.url,
+                max: nextProps.song.dt / 1000
+            });            
         }
     }
 
@@ -111,19 +94,19 @@ export default class Player extends Component {
 
     toggleIsPlaying()
     {
-        if (this.isPlaying === false)
+        if (this.state.isPlaying === false)
         {
-            this.player.classList.remove("icon-play");
-            this.player.classList.add("icon-pause");
             this.audio.play();
-            this.isPlaying = true;
+            this.setState({
+                isPlaying: true
+            });
         }
         else
         {
-            this.player.classList.remove("icon-pause");
-            this.player.classList.add("icon-play");
             this.audio.pause();
-            this.isPlaying = false;
+            this.setState({
+                isPlaying: false
+            });
         }
     }
 
@@ -135,14 +118,14 @@ export default class Player extends Component {
         if (this.props.song)
         {
             url = this.props.song.mp3Url;
-            duration = TimeUtil.formatPlayTime(this.props.song.duration);
+            duration = TimeUtil.formatPlayTime(this.props.song.dt);
         }
         const state = this.state;
         return (
             <div className="nmr-player">
                 <div className="player-controls">
                     <span ref="previous" className="icon iconfont icon-previous"></span>
-                    <span ref="player" className="icon iconfont icon-play" onClick={this.handlePlayerClick}></span>
+                    <span ref="player" className={"icon iconfont " + (state.isPlaying === true ? "icon-pause" : "icon-play")} onClick={this.handlePlayerClick}></span>
                     <span ref="next" className="icon iconfont icon-next"></span>
                 </div>
                 <div className="time-bar">
@@ -182,7 +165,8 @@ export default class Player extends Component {
                 </div>
                 <audio
                     ref="audio"
-                    src={url}>
+                    src={state.url}
+                    autoPlay>
                 </audio>
             </div>
         );
