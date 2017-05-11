@@ -56,14 +56,55 @@ export default class Player extends Component {
 
     async componentWillReceiveProps(nextProps)
     {
+
         if (nextProps.song)
         {
-            const detail = await ServiceClient.getInstance().getMusicUrl(nextProps.song.id);
-            this.setState({
-                isPlaying: true,
-                url: detail.url,
-                max: nextProps.song.dt / 1000
-            });            
+            if (this.props.song) {
+                if (nextProps.song.id === this.props.song.id && this.state.isPlaying === true)
+                {
+
+                }
+                else
+                {
+                    if (nextProps.song.mp3Url)
+                    {
+                        this.setState({
+                            isPlaying: true,
+                            url: nextProps.song.mp3Url,
+                            max: nextProps.song.duration / 1000
+                        });
+                    }
+                    else
+                    {
+                        const detail = await ServiceClient.getInstance().getMusicUrl(nextProps.song.id);
+                        this.setState({
+                            isPlaying: true,
+                            url: detail.url,
+                            max: nextProps.song.dt / 1000
+                        });
+                    }
+                }
+            }
+            else
+            {
+                if (nextProps.song.mp3Url)
+                {
+                    this.setState({
+                        isPlaying: true,
+                        url: nextProps.song.mp3Url,
+                        max: nextProps.song.duration / 1000
+                    });
+                }
+                else
+                {
+                    const detail = await ServiceClient.getInstance().getMusicUrl(nextProps.song.id);
+                    this.setState({
+                        isPlaying: true,
+                        url: detail.url,
+                        max: nextProps.song.dt / 1000
+                    });
+                }
+            }
         }
     }
 
@@ -117,16 +158,15 @@ export default class Player extends Component {
         let duration = 0;
         if (this.props.song)
         {
-            url = this.props.song.mp3Url;
-            duration = TimeUtil.formatPlayTime(this.props.song.dt);
+            duration = TimeUtil.formatPlayTime(this.props.song.duration ? this.props.song.duration : this.props.song.dt);
         }
         const state = this.state;
         return (
             <div className="nmr-player">
                 <div className="player-controls">
-                    <span ref="previous" className="icon iconfont icon-previous"></span>
+                    <span ref="previous" className="icon iconfont icon-previous" onClick={() => this.props.onSongSwitch("prev")}></span>
                     <span ref="player" className={"icon iconfont " + (state.isPlaying === true ? "icon-pause" : "icon-play")} onClick={this.handlePlayerClick}></span>
-                    <span ref="next" className="icon iconfont icon-next"></span>
+                    <span ref="next" className="icon iconfont icon-next" onClick={() => this.props.onSongSwitch("next")}></span>
                 </div>
                 <div className="time-bar">
                     <span ref="curTime" className="current-time">

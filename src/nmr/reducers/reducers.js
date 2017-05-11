@@ -43,6 +43,17 @@ function activeSelectedPlayList(state = null, action)
     }
 }
 
+function activePlayingList(state = [], action)
+{
+    switch (action.type) {
+        case ActionType.ACTIVE_PLAYINGLIST:
+            let nextState = action.list;
+            return nextState;
+        default:
+          return state
+    }
+}
+
 function activeSelectedSong(state = null, action)
 {
     switch (action.type) {
@@ -58,6 +69,7 @@ const rootReducer = combineReducers({
     userId: login,
     playlists: activeUserPlayLists,
     selectedPlayList: activeSelectedPlayList,
+    playingList: activePlayingList,
     selectedSong: activeSelectedSong
 });
 

@@ -23,6 +23,8 @@ export const RECEIVE_PALYLIST_DETAIL = 'RECEIVE_PALYLIST_DETAIL';
  */
 export const ACTIVE_SONG = 'ACTIVE_SONG';
 
+export const ACTIVE_PLAYINGLIST = 'ACTIVE_PLAYINGLIST';
+
 /*
  * 异步请求action: 搜索
  */

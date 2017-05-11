@@ -8,7 +8,7 @@ module.exports = {
     context: path.resolve("./src"),
 
     entry: {
-        vendor: [ "jquery","perfect-scrollbar" ],
+        vendor: [ "jquery", "perfect-scrollbar" ],
         nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ],
     },
 
@@ -49,6 +49,7 @@ module.exports = {
 
         new webpack.ProvidePlugin({
             $: "jquery",
+            jQuery: "jquery",
             Ps: "perfect-scrollbar"
         }),
 

@@ -23,6 +23,16 @@ export default class TrackTable extends Component {
             });
             nextProps.onSongClick(nextProps.playlist[0]);
         }
+        else
+        {
+            if (nextProps.selectedSong)
+            {
+                this.setState({
+                    selectedId: nextProps.selectedSong.id
+                })
+            }
+        }
+
     }
 
     handleClick(id)
@@ -30,9 +40,6 @@ export default class TrackTable extends Component {
         const selectedId = this.state.selectedId;
         if (id !== selectedId)
         {
-            this.setState({
-                selectedId: id
-            });
             const song = this.props.playlist.find(item => item.id === id);
             this.props.onSongClick(song);
         }
@@ -69,11 +76,11 @@ export default class TrackTable extends Component {
                         {playlist.map((item, i) => {
                             let id = item.id;
                             let selectedClass = (item.id === selectedId) ? "selected" : "";
-                            let time = TimeUtil.formatPlayTime(item.lMusic ? item.lMusic.playtime : item.dt);
+                            let time = TimeUtil.formatPlayTime(item.lMusic ? item.lMusic.playTime : item.dt);
                             let artists = item.ar || item.artists;
                             let album = item.al || item.album;
                             return (
-                                <tr key={item.id} className={selectedClass} onDoubleClick={() => this.handleClick(item.id)}>
+                                <tr key={i} className={selectedClass} onDoubleClick={() => this.handleClick(item.id)}>
                                     <td>{item.name}</td>
                                     <td>{artists.map(artist => artist.name).join(",")}</td>
                                     <td>{album.name}</td>
