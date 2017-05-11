@@ -52,11 +52,6 @@ export default class PlayListDetail extends Component {
             );
     }
 
-    componentDidMount()
-    {
-        // this._loaderPlayList(this.props.playlistId);
-    }
-
     componentWillReceiveProps(nextProps)
     {
         if (nextProps.playlist !== this.props.playlist)

@@ -22,7 +22,7 @@ export const RECEIVE_PALYLIST_DETAIL = 'RECEIVE_PALYLIST_DETAIL';
  * 选择歌曲
  */
 export const ACTIVE_SONG = 'ACTIVE_SONG';
-
+export const ACTIVE_PLAYER = 'ACTIVE_PLAYER';
 export const ACTIVE_PLAYINGLIST = 'ACTIVE_PLAYINGLIST';
 
 /*

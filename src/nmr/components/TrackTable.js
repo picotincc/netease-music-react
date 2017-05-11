@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import { activeSelectedSong, activePlayingList, activePlayer } from '../actions/SongAction';
 import TimeUtil from "../util/TimeUtil";
 
-export default class TrackTable extends Component {
+class TrackTable extends Component {
 
     constructor (props) {
         super(props);
@@ -16,23 +18,12 @@ export default class TrackTable extends Component {
 
     componentWillReceiveProps(nextProps)
     {
-        if (this.state.selectedId === null && nextProps.playlist !== null && nextProps.playlist.length > 0)
+        if (nextProps.selectedSong)
         {
             this.setState({
-                selectedId: nextProps.playlist[0].id
-            });
-            nextProps.onSongClick(nextProps.playlist[0]);
+                selectedId: nextProps.selectedSong.id
+            })
         }
-        else
-        {
-            if (nextProps.selectedSong)
-            {
-                this.setState({
-                    selectedId: nextProps.selectedSong.id
-                })
-            }
-        }
-
     }
 
     handleClick(id)
@@ -41,8 +32,16 @@ export default class TrackTable extends Component {
         if (id !== selectedId)
         {
             const song = this.props.playlist.find(item => item.id === id);
-            this.props.onSongClick(song);
+            this.handleSongClick(song);
         }
+    }
+
+    handleSongClick(song)
+    {
+        const {dispatch, playlist, selectedSong} = this.props;
+        dispatch(activeSelectedSong(song));
+        dispatch(activePlayer(true));
+        dispatch(activePlayingList(playlist));
     }
 
     render()
@@ -80,7 +79,7 @@ export default class TrackTable extends Component {
                             let artists = item.ar || item.artists;
                             let album = item.al || item.album;
                             return (
-                                <tr key={i} className={selectedClass} onDoubleClick={() => this.handleClick(item.id)}>
+                                <tr key={i} className={selectedClass} onClick={() => this.handleClick(item.id)}>
                                     <td>{item.name}</td>
                                     <td>{artists.map(artist => artist.name).join(",")}</td>
                                     <td>{album.name}</td>
@@ -94,7 +93,20 @@ export default class TrackTable extends Component {
 
         );
     }
-
-
-
 }
+
+function mapStateToProps(state) {
+    let playlist = [];
+    if (state.selectedPlayList)
+    {
+        playlist = state.selectedPlayList.tracks ? state.selectedPlayList.tracks : state.selectedPlayList.songs;
+    }
+    return {
+        playlist,
+        selectedSong: state.selectedSong,
+        isPlaying: state.isPlaying
+    };
+}
+
+// 包装 component ，注入 dispatch 和 state 到其默认的 connect(select)(App) 中；
+export default connect(mapStateToProps)(TrackTable);

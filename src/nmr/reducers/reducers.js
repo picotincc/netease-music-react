@@ -65,12 +65,24 @@ function activeSelectedSong(state = null, action)
     }
 }
 
+function activePlayer(state = false, action)
+{
+    switch (action.type) {
+        case ActionType.ACTIVE_PLAYER:
+          let nextState = action.tag;
+          return nextState;
+        default:
+          return state
+    }
+}
+
 const rootReducer = combineReducers({
     userId: login,
     playlists: activeUserPlayLists,
     selectedPlayList: activeSelectedPlayList,
     playingList: activePlayingList,
-    selectedSong: activeSelectedSong
+    selectedSong: activeSelectedSong,
+    isPlaying: activePlayer
 });
 
 export default rootReducer;

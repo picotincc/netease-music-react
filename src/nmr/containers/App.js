@@ -8,7 +8,7 @@ import TrackTable from "../components/TrackTable";
 import Player from "../components/Player";
 import { login } from '../actions/UserAction';
 import { loadUserPlayLists, activeSelectedPlayList, search } from '../actions/PlayListAction';
-import { activeSelectedSong, activePlayingList } from '../actions/SongAction';
+import { activeSelectedSong, activePlayingList, activePlayer } from '../actions/SongAction';
 
 
 
@@ -17,9 +17,6 @@ class App extends Component {
     constructor(props) {
         super(props);
         console.log("App is running");
-
-        this.handleSongClick = this.handleSongClick.bind(this);
-        this.handleSongSwitch = this.handleSongSwitch.bind(this);
     }
 
     async componentDidMount()
@@ -39,47 +36,8 @@ class App extends Component {
 
     }
 
-    handleSongClick(song)
-    {
-        const {dispatch, userPlayLists, selectedPlayList, selectedSong} = this.props;
-        let playlist = [];
-        if (selectedPlayList && selectedPlayList.tracks) {
-            playlist = selectedPlayList.tracks;
-        }
-        if (selectedPlayList && selectedPlayList.songs) {
-            playlist = selectedPlayList.songs;
-        }
-        dispatch(activeSelectedSong(song));
-        dispatch(activePlayingList(playlist));
-    }
-
-    handleSongSwitch(tag)
-    {
-        const { dispatch, playingList, selectedSong } = this.props;
-        const list = playingList.map((item, i) => {
-            return {
-                index: i,
-                id: item.id
-            }
-        });
-
-        const item = list.find(s => s.id == selectedSong.id);
-        if (tag === "prev")
-        {
-            if (item.index > 0) {
-                dispatch(activeSelectedSong(playingList[item.index - 1]));
-            }
-        }
-        else
-        {
-            if (item.index < playingList.length - 1) {
-                dispatch(activeSelectedSong(playingList[item.index + 1]));
-            }
-        }
-    }
-
     render() {
-        const {dispatch, userPlayLists, selectedPlayList, selectedSong} = this.props;
+        const {dispatch, userPlayLists, selectedPlayList, selectedSong, isPlaying} = this.props;
         let playlist = [];
         if (selectedPlayList && selectedPlayList.tracks) {
             playlist = selectedPlayList.tracks;
@@ -107,18 +65,11 @@ class App extends Component {
                     <section className="content" ref={(content) => this.content = content}>
                         <PlayListDetail playlist={selectedPlayList} />
 
-                        <TrackTable
-                            selectedSong={selectedSong}
-                            playlist={playlist}
-                            onSongClick={this.handleSongClick}
-                        />
+                        <TrackTable/>
                     </section>
                 </main>
                 <footer>
-                    <Player
-                        song={selectedSong}
-                        onSongSwitch={this.handleSongSwitch}
-                    />
+                    <Player/>
                 </footer>
           </div>
         )
@@ -126,13 +77,13 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-      userId: state.userId,
-      userPlayLists: state.playlists,
-      selectedPlayList: state.selectedPlayList,
-      playingList: state.playingList,
-      selectedSong: state.selectedSong
-  };
+    return {
+        userId: state.userId,
+        userPlayLists: state.playlists,
+        selectedPlayList: state.selectedPlayList,
+        playingList: state.playingList,
+        selectedSong: state.selectedSong
+    };
 }
 
 // 包装 component ，注入 dispatch 和 state 到其默认的 connect(select)(App) 中；
