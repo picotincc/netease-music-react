@@ -71,7 +71,12 @@ class Player extends Component {
 
     shouldComponentUpdate(nextProps, nextState)
     {
-
+        if (this.props.song && nextProps.song.id === this.props.song.id)
+        {
+            this.audio.play();
+            return false;
+        }
+        return true;
     }
 
     handleVolumeChange(value)
