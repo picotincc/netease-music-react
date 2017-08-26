@@ -59,25 +59,25 @@ class Player extends Component {
 
     async componentWillReceiveProps(nextProps)
     {
-        if (nextProps.song && nextProps.isPlaying === true)
-        {
-            const res = await _formatSong(nextProps.song);
-            this.setState({
-                url: res.url,
-                max: res.max
-            });
-        }
+        // if (nextProps.song)
+        // {
+        //     const res = await _formatSong(nextProps.song);
+        //     this.setState({
+        //         url: res.url,
+        //         max: res.max
+        //     });
+        // }
     }
 
-    shouldComponentUpdate(nextProps, nextState)
-    {
-        if (this.props.song && nextProps.song.id === this.props.song.id)
-        {
-            this.audio.play();
-            return false;
-        }
-        return true;
-    }
+    // shouldComponentUpdate(nextProps, nextState)
+    // {
+    //     if (this.props.song && nextProps.song.id === this.props.song.id)
+    //     {
+    //         this.audio.play();
+    //         return false;
+    //     }
+    //     return true;
+    // }
 
     handleVolumeChange(value)
     {
@@ -119,7 +119,7 @@ class Player extends Component {
     }
 
 
-    handleSongSwitch(tag)
+    async handleSongSwitch(tag)
     {
         const { dispatch, playingList, song } = this.props;
         const list = playingList.map((item, i) => {
@@ -133,13 +133,19 @@ class Player extends Component {
         if (tag === "prev")
         {
             if (item.index > 0) {
-                dispatch(activeSelectedSong(playingList[item.index - 1]));
+                const prevSong = playingList[item.index - 1];
+                const detail = await ServiceClient.getInstance().getMusicUrl(prevSong.id);
+                const newSong = Object.assign({}, prevSong, { url: detail.url});
+                dispatch(activeSelectedSong(newSong));
             }
         }
         else
         {
             if (item.index < playingList.length - 1) {
-                dispatch(activeSelectedSong(playingList[item.index + 1]));
+                const nextSong = playingList[item.index + 1];
+                const detail = await ServiceClient.getInstance().getMusicUrl(nextSong.id);
+                const newSong = Object.assign({}, nextSong, { url: detail.url});
+                dispatch(activeSelectedSong(newSong));
             }
         }
     }
@@ -149,14 +155,17 @@ class Player extends Component {
     {
         let url = "";
         let duration = 0;
-        if (this.props.song)
+        let max = 100;
+        let song = this.props.song;
+        if (song)
         {
-            duration = TimeUtil.formatPlayTime(this.props.song.duration ? this.props.song.duration : this.props.song.dt);
+            duration = TimeUtil.formatPlayTime(song.duration ? song.duration : song.dt);
+            max = song.duration ? song.duration / 1000 : song.dt / 1000; 
         }
         const state = this.state;
         return (
             <div className="nmr-player">
-                <div className="popup">popup</div>
+                {/* <div className="popup">popup</div> */}
                 <div className="player-controls">
                     <span ref="previous" className="icon iconfont icon-previous" onClick={() => this.handleSongSwitch("prev")}></span>
                     <span ref="player" className={"icon iconfont " + (this.props.isPlaying === true ? "icon-pause" : "icon-play")} onClick={this.handlePlayerClick}></span>
@@ -173,7 +182,7 @@ class Player extends Component {
                             disabled={false}
                             tipFormatter={null}
                             min={state.min}
-                            max={state.max}
+                            max={max}
                             step={state.step}
                             value={state.curTime}
                             onChange={this.handleTimeChange}
@@ -199,7 +208,7 @@ class Player extends Component {
                 </div>
                 <audio
                     ref="audio"
-                    src={state.url}
+                    src={song ? song.url : ''}
                     autoPlay>
                 </audio>
             </div>

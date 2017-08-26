@@ -34,6 +34,7 @@ class SearchBar extends Component {
             if (!this.inputEvent) {
                 this.inputEvent = setTimeout(async () => {
                     const res = await ServiceClient.getInstance().search(value, true);
+                    console.log(res);
                     if (res.songs) {
                         const names = res.songs.map(item => {
                             return {

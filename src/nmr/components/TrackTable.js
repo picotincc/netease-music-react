@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import ServiceClient from "../service/ServiceClient";
+
 import { activeSelectedSong, activePlayingList, activePlayer } from '../actions/SongAction';
 import TimeUtil from "../util/TimeUtil";
 
@@ -26,13 +28,15 @@ class TrackTable extends Component {
         }
     }
 
-    handleClick(id)
+    async handleClick(id)
     {
         const selectedId = this.state.selectedId;
         if (id !== selectedId)
         {
             const song = this.props.playlist.find(item => item.id === id);
-            this.handleSongClick(song);
+            const detail = await ServiceClient.getInstance().getMusicUrl(song.id);
+            const newSong = Object.assign({}, song, { url: detail.url});
+            this.handleSongClick(newSong);
         }
     }
 
@@ -75,7 +79,7 @@ class TrackTable extends Component {
                         {playlist.map((item, i) => {
                             let id = item.id;
                             let selectedClass = (item.id === selectedId) ? "selected" : "";
-                            let time = TimeUtil.formatPlayTime(item.lMusic ? item.lMusic.playTime : item.dt);
+                            let time = TimeUtil.formatPlayTime(item.duration ? item.duration : item.dt);
                             let artists = item.ar || item.artists;
                             let album = item.al || item.album;
                             return (

@@ -26,7 +26,7 @@ export default class PlayListDetail extends Component {
         }
         return (
                 <div className="play-list-detail">
-                    <img src={playlist.picUrl}></img>
+                    <img src={playlist.coverImgUrl}></img>
                     <div className="details">
                         <div className="title-bar">
                             <span className="logo">歌单</span>
