@@ -1,92 +1,53 @@
 import React, { Component } from 'react';
 
-import ServiceClient from "../service/ServiceClientP";
-
 export default class PlayList extends Component {
 
     constructor (props) {
         super(props);
-        this._selectedId = "";
-        this.onSelectionChange = this.onSelectionChange.bind(this);
-
-        this._loaderUserPlayLists();
-    }
-
-    static defaultProps = {
-        userId: ""
-    }
-
-    static propTypes = {
-        userId: React.PropTypes.string.isRequired
+        this.handleClick = this.handleClick.bind(this);
     }
 
     state = {
-        playLists: []
+        selectedId: null
     }
 
-    get selectedId()
+    componentWillReceiveProps(nextProps)
     {
-        return this._selectedId;
-    }
-
-    set selectedId(value)
-    {
-        if (value !== this._selectedId)
+        if (this.state.selectedId === null && nextProps.playlists.length > 0)
         {
-            if (this._selectedId)
-            {
-                this.refs[this._selectedId].classList.remove("selected");
-            }
-            this._selectedId = value;
-            this.refs[this._selectedId].classList.add("selected");
+            nextProps.onPlayListClick(nextProps.playlists[0].id);
+            this.setState({
+                selectedId: nextProps.playlists[0].id
+            });
         }
     }
 
     render()
     {
-        const playlists = this.state.playLists;
-        const self = this;
+        const playlists = this.props.playlists;
+        const selectedId = this.state.selectedId;
         return (
             <ul className="nmr-play-list-view">
             {playlists.map((item, i) => {
-                let id = item.id;
-                return (<li onClick={() => this.onSelectionChange(id)}
-                           ref={item.id}
-                           key={item.id}>
-                           <span className="icon iconfont icon-playlist"></span>
-                           <span className="text">{item.name}</span>
-                        </li>);
+                let selectedClass = (item.id === selectedId) ? "selected" : "";
+                return <li onClick={() => this.handleClick(item.id)} className={selectedClass} ref={item.id} key={item.id}>
+                    <span className="icon iconfont icon-playlist"></span>{item.name}
+                </li>
             })}
             </ul>
         );
     }
 
-    componentDidMount()
+    handleClick(id)
     {
-        // this._loaderUserPlayLists();
-    }
-
-    shouldComponentUpdate(nextProps, nextState)
-    {
-        if (nextState.playLists === this.state.playLists)
+        if (id !== this.state.selectedId)
         {
-            return false;
+            this.setState({
+                selectedId: id
+            });
+            this.props.onPlayListClick(id);
         }
         return true;
-    }
-
-    _loaderUserPlayLists()
-    {
-        ServiceClient.getInstance().getUserPlayLists().then(res => {
-            this.setState({ playLists: res });
-            this.onSelectionChange(res[0].id);
-        });
-    }
-
-    onSelectionChange(id)
-    {
-        this.props.handleClick(id);
-        this.selectedId = id;
     }
 
 }

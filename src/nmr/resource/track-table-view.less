@@ -34,62 +34,55 @@
             left: 60px;
         }
     }
+}
 
-    > .track-table
-    {
-        table-layout: fixed;
-        border-collapse: collapse;
+.track-table
+{
+    table-layout: fixed;
+    border-collapse: collapse;
 
-        width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 
+    tr{
+        height: @nmr-list-item-height;
+        cursor: default;
+
+        &.selected{
+            color: @nmr-selection-color;
+            background: @nmr-selection-bg;
+        }
+
+        td{
+          padding-left: @nmr-padding-horizonal;
+          padding-right: @nmr-padding-horizonal;
+          white-space: nowrap;
+          overflow-x: hidden;
+        }
+    }
+
+    tbody{
+      overflow-y: auto;
+    }
+
+    thead{
         tr
         {
-            height: @nmr-list-item-height;
-            cursor: default;
+            border-bottom: 1px solid @nmr-separator-color;
 
-            &.selected
-            {
-                color: @nmr-selection-color;
-                background: @nmr-selection-bg;
+            td:not(:first-child){
+                border-left: 1px solid @nmr-separator-color;
             }
 
-            td
-            {
-              padding-left: @nmr-padding-horizonal;
-              padding-right: @nmr-padding-horizonal;
-              white-space: nowrap;
-              overflow-x: hidden;
+            .artists{
+                width: 200px;
             }
-        }
-
-        tbody
-        {
-          overflow-y: auto;
-        }
-
-        thead
-        {
-            tr
-            {
-                border-bottom: 1px solid @nmr-separator-color;
-
-                td:not(:first-child)
-                {
-                    border-left: 1px solid @nmr-separator-color;
-                }
-
-                .artists
-                {
-                    width: 200px;
-                }
-                .album
-                {
-                    width: 320px;
-                }
-                .time
-                {
-                    width: 80px;
-                }
+            .album{
+                width: 320px;
+            }
+            .time{
+                width: 80px;
             }
         }
     }

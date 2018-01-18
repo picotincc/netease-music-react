@@ -13,9 +13,15 @@ export default class PlayListDetail extends Component {
     render()
     {
         const playlist = this.props.playlist;
-        if (playlist === null) {
+        if (!playlist) {
             return (
                 <div className="play-list-detail"></div>
+            );
+        }
+
+        if (playlist.songs) {
+            return (
+                <div className="play-list-detail">搜索相关歌曲</div>
             );
         }
         return (
@@ -44,11 +50,6 @@ export default class PlayListDetail extends Component {
                     </div>
                 </div>
             );
-    }
-
-    componentDidMount()
-    {
-        // this._loaderPlayList(this.props.playlistId);
     }
 
     componentWillReceiveProps(nextProps)

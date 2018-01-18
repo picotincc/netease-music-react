@@ -1,6 +1,6 @@
-const NM_API_URL = "/api";
+const NM_API_URL = "http://localhost:8001/api";
 
-export default class ServiceClientP
+export default class ServiceClient
 {
     static _instance = null;
 
@@ -11,11 +11,11 @@ export default class ServiceClientP
 
     static getInstance()
     {
-        if(ServiceClientP._instance === null)
+        if(ServiceClient._instance === null)
         {
-            ServiceClientP._instance = new ServiceClientP();
+            ServiceClient._instance = new ServiceClient();
         }
-        return ServiceClientP._instance;
+        return ServiceClient._instance;
     }
 
     get userId()
@@ -23,10 +23,9 @@ export default class ServiceClientP
         return this._userId;
     }
 
-    login(userId)
+    login()
     {
-        this._userId = userId;
-        // this.__pseudoLogin(user);
+        this.__pseudoLogin();
         return this._userId;
     }
 
@@ -36,36 +35,33 @@ export default class ServiceClientP
         // this._userId = "260616759";
     }
 
-    getData(url, paras)
-    {
-        return new Promise((resolve, reject) => {
-            $.ajax({
-                url: `${NM_API_URL}` + url,
-                data: paras
-            }).always(res => {
-                resolve(res);
-            });
-        });
-    }
-
     getUserPlayLists(uid = this.userId)
     {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: `${NM_API_URL}/user/playlist/`,
+                url: `${NM_API_URL}/user/playlist`,
                 data: {
                     uid,
                     limit: 1000,
                     offset: 0
                 }
             }).always(res => {
-                if (res.code === 200)
-                {
-                    resolve(res.playlist);
+                let result = null;
+                if (typeof res === "string") {
+                    result = JSON.parse(res);
                 }
                 else
                 {
-                    reject("Response with error code:" + res.code);
+                    result = res;
+                }
+
+                if (result.code === 200)
+                {
+                    resolve(result.playlist);
+                }
+                else
+                {
+                    reject("Response with error code:" + result.code);
                 }
             });
         });
@@ -80,13 +76,23 @@ export default class ServiceClientP
                     id
                 }
             }).always(res => {
-                if (res.code === 200 )
-                {
-                    resolve(res.result);
+
+                let result = null;
+                if (typeof res === "string") {
+                    result = JSON.parse(res);
                 }
                 else
                 {
-                    reject("Response with error code:" + res.code);
+                    result = res;
+                }
+
+                if (result.code === 200 )
+                {
+                    resolve(result.result);
+                }
+                else
+                {
+                    reject("Response with error code:" + result.code);
                 }
             });
         });
@@ -96,7 +102,7 @@ export default class ServiceClientP
     {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: `${NM_API_URL}/song/detail?ids=[${ids}]`,
+                url: `${NM_API_URL}/song/detail?ids=${ids}`,
                 // data: {
                 //     ids
                 // }

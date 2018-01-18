@@ -8,9 +8,8 @@ module.exports = {
     context: path.resolve("./src"),
 
     entry: {
-        vendor: [ "jquery" ],
+        vendor: [ "jquery", "perfect-scrollbar" ],
         nmr: [ "./nmr/index.js", "./nmr/resource/index.less" ],
-        // todo: [ "./todo/index.js" ]
     },
 
     output: {
@@ -23,7 +22,7 @@ module.exports = {
         extensions: [ "", ".js", ".less" ]
     },
 
-    devtool: "source-map",
+    devtool: 'cheap-module-source-map',
 
     module: {
         loaders: [
@@ -35,6 +34,10 @@ module.exports = {
             {
                 test: /\.less$/,
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+            },
+            {
+                test: /\.(png|jpg)$/,
+                loader: 'url-loader?limit=10000&name=images/[name].[ext]'
             }
         ]
     },
@@ -45,7 +48,9 @@ module.exports = {
         new webpack.NoErrorsPlugin(),
 
         new webpack.ProvidePlugin({
-            "$": "jquery"
+            $: "jquery",
+            jQuery: "jquery",
+            Ps: "perfect-scrollbar"
         }),
 
         new webpack.optimize.CommonsChunkPlugin({
@@ -68,9 +73,9 @@ module.exports = {
                 ignorePath: false,
                 changeOrigin: true,
                 secure: false,
-                // headers: {
-                //     "Referer": "http://music.163.com"
-                // }
+                headers: {
+                    "Referer": "http://music.163.com"
+                }
             }
         }
     }

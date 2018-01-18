@@ -1,53 +1,66 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import PlayListDetail from "./PlayListDetail";
+import ServiceClient from "../service/ServiceClient";
+
+import { activeSelectedSong, activePlayingList, activePlayer } from '../actions/SongAction';
 import TimeUtil from "../util/TimeUtil";
 
-export default class TrackTable extends Component {
+class TrackTable extends Component {
 
     constructor (props) {
         super(props);
-        this._selectedId = "";
-        this.onSelectionChange = this.onSelectionChange.bind(this);
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    static defaultProps = {
-        playlist: {}
+    state = {
+        selectedId: null
     }
 
-    get selectedId()
+    componentWillReceiveProps(nextProps)
     {
-        return this._selectedId;
-    }
-
-    set selectedId(value)
-    {
-        if (value !== this._selectedId)
+        if (nextProps.selectedSong)
         {
-            if (this._selectedId && this.refs[this._selectedId])
-            {
-                this.refs[this._selectedId].classList.remove("selected");
-            }
-            this._selectedId = value;
-            this.refs[this._selectedId].classList.add("selected");
+            this.setState({
+                selectedId: nextProps.selectedSong.id
+            })
         }
+    }
+
+    async handleClick(id)
+    {
+        const selectedId = this.state.selectedId;
+        if (id !== selectedId)
+        {
+            const song = this.props.playlist.find(item => item.id === id);
+            const detail = await ServiceClient.getInstance().getMusicUrl(song.id);
+            const newSong = Object.assign({}, song, { url: detail.url});
+            this.handleSongClick(newSong);
+        }
+    }
+
+    handleSongClick(song)
+    {
+        const {dispatch, playlist, selectedSong} = this.props;
+        dispatch(activeSelectedSong(song));
+        dispatch(activePlayer(true));
+        dispatch(activePlayingList(playlist));
     }
 
     render()
     {
         const playlist = this.props.playlist;
-        if (playlist === null) {
+        if (playlist === null || playlist.length === 0) {
             return (
                 <div className="nmr-track-table-view"></div>
             );
         }
-        let tracks = [];
-        console.log(playlist);
-        tracks = playlist.tracks;
+        const selectedId = this.state.selectedId;
         const self = this;
+
         return (
             <div className="nmr-track-table-view">
-                <PlayListDetail playlist={playlist} />
                 <div className="table-tab">
                     <div className="tab-tracks">
                         歌曲列表
@@ -63,23 +76,17 @@ export default class TrackTable extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {tracks.map((item, i) => {
+                        {playlist.map((item, i) => {
                             let id = item.id;
-                            let duration = 0;
-                            if (item.lMusic)
-                            {
-                                duration = item.lMusic.playTime;
-                            }
-                            else
-                            {
-                                duration = item.duration;
-                            }
-                            let time = TimeUtil.formatPlayTime(duration);
+                            let selectedClass = (item.id === selectedId) ? "selected" : "";
+                            let time = TimeUtil.formatPlayTime(item.duration ? item.duration : item.dt);
+                            let artists = item.ar || item.artists;
+                            let album = item.al || item.album;
                             return (
-                                <tr key={item.id} ref={item.id} onDoubleClick={() => this.onSelectionChange(item.id)}>
+                                <tr key={i} className={selectedClass} onClick={() => this.handleClick(item.id)}>
                                     <td>{item.name}</td>
-                                    <td>{item.artists.map(artist => artist.name).join(",")}</td>
-                                    <td>{item.album.name}</td>
+                                    <td>{artists.map(artist => artist.name).join(",")}</td>
+                                    <td>{album.name}</td>
                                     <td>{time}</td>
                                 </tr>
                             );
@@ -89,26 +96,20 @@ export default class TrackTable extends Component {
             </div>
         );
     }
-
-    onSelectionChange(id)
-    {
-        this.selectedId = id;
-        const selectedSong = this.props.playlist.tracks.find((item) => {
-            return item.id === id ? true : false;
-        });
-        this.props.handleClick(selectedSong);
-    }
-
-    componentDidMount()
-    {
-        // this._loaderPlayList(this.props.playlistId);
-    }
-
-    componentWillReceiveProps(nextProps)
-    {
-        if (nextProps.playlist !== this.props.playlist)
-        {
-            this._selectedId = "";
-        }
-    }
 }
+
+function mapStateToProps(state) {
+    let playlist = [];
+    if (state.selectedPlayList)
+    {
+        playlist = state.selectedPlayList.tracks ? state.selectedPlayList.tracks : state.selectedPlayList.songs;
+    }
+    return {
+        playlist,
+        selectedSong: state.selectedSong,
+        isPlaying: state.isPlaying
+    };
+}
+
+// 包装 component ，注入 dispatch 和 state 到其默认的 connect(select)(App) 中；
+export default connect(mapStateToProps)(TrackTable);

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactPlayer from "react-player";
 
 import Player from "./Player";
 import PlayList from "./PlayList";

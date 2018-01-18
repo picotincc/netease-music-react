@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require("fs");
 const gulp = require("gulp");
 const gutil = require("gulp-util");
 const open = require("gulp-open");
@@ -18,11 +19,14 @@ gulp.task("dist", [ "clean" ], cb => {
             throw new gutil.PluginError("webpack", err);
         }
         gutil.log("[webpack]", stats.toString());
+        fs.writeFile("stats.json",JSON.stringify(stats.toJson("verbose")), cb);
+
     });
 });
 
 gulp.task("dev", [ "clean" ], cb => {
     const config = require("./webpack.config.dev.js");
+    config.entry.nmr.unshift("webpack-dev-server/client?http://localhost:3000", "webpack/hot/dev-server");
     const complier = webpack(config);
 
     new WebpackDevServer(complier, {
