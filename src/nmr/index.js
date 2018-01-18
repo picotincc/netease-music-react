@@ -5,9 +5,9 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-import rootReducer from './reducers/reducers'
-import App from './components/App';
-import ServiceClient from "./service/ServiceClientP";
+
+import App from './containers/App';
+import rootReducer from "./reducers/reducers";
 
 const loggerMiddleware = createLogger();
 
@@ -20,4 +20,22 @@ let store = createStore(
     )
 );
 
-run();
+let rootElement = document.getElementById('root');
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  rootElement
+);
+
+
+// function run()
+// {
+//     const userId = ServiceClient.getInstance().login();
+//     render(
+//         <App userId={userId}/>,
+//         document.getElementById('root')
+//     );
+// }
+//
+// run();
