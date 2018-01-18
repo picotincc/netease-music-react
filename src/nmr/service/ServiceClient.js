@@ -1,4 +1,4 @@
-const NM_API_URL = "http://localhost:8001";
+const NM_API_URL = "http://cszone.cn:8001/api";
 
 export default class ServiceClient
 {
@@ -89,7 +89,7 @@ export default class ServiceClient
 
         if (res.code === 200 )
         {
-            return res.playlist;
+            return res.result;
         }
         else
         {
